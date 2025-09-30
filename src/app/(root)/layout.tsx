@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
+import Header from "@/components/Header";
 
 const inter = Inter({
   variable: "--font-sans-serif",
@@ -19,7 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased`}>{children}</body>
+      <body className={`${inter.variable} antialiased flex flex-col items-center justify-center gap-15`}>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
