@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
-import Header from "@/components/Header";
+import Image from "next/image";
+import Link from "next/link";
 
 const inter = Inter({
   variable: "--font-sans-serif",
@@ -21,10 +22,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} antialiased flex flex-col items-center justify-center gap-15`}
+        className={`${inter.variable} antialiased flex items-center justify-center min-h-screen border`}
       >
-        <Header />
-        {children}
+        <div className="flex flex-col justify-center items-center shadow-xl border border-secondary p-10 rounded-lg">
+          <Link href={"/"} className="mb-5">
+            <Image src={"/logo.svg"} alt="" width={75} height={75} />
+          </Link>
+
+          {children}
+        </div>
       </body>
     </html>
   );

@@ -11,8 +11,8 @@ const Header = () => {
           href={"/"}
           className="flex items-center gap-2 hover:opacity-85 h-full"
         >
-          <Image src={"logo.svg"} alt="logo" width={35} height={35} />
-          <h1>Pinfinity</h1>
+          <Image src={"/logo.svg"} alt="logo" width={35} height={35} />
+          <h1 className="text-3xl">Pinfinity</h1>
         </Link>
       </div>
 
@@ -20,7 +20,7 @@ const Header = () => {
 
       <div className="space-x-2 h-full">
         <Button asChild size={"lg"} className="text-base h-full">
-          <Link href={"#"}>Log In</Link>
+          <Link href={"/auth/login"}>Log In</Link>
         </Button>
 
         <Button
@@ -29,7 +29,7 @@ const Header = () => {
           size={"lg"}
           className="text-base h-full"
         >
-          <Link href={"#"}>Sign Up</Link>
+          <Link href={"/auth/signup"}>Sign Up</Link>
         </Button>
       </div>
     </header>
