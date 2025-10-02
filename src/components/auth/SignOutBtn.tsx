@@ -20,6 +20,7 @@ const SignOutBtn = () => {
 
   return (
     <Button
+      type="button"
       size={"lg"}
       className="large-btn cursor-pointer"
       onClick={handleLogOut}

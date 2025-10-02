@@ -15,7 +15,7 @@ const Page = () => {
       <div className="flex flex-col items-center gap-2">
         <span className="font-semibold">OR</span>
 
-        <Button variant={"secondary"} size={"lg"}>
+        <Button type="button" variant={"secondary"} size={"lg"}>
           Sign Up With Google
           <svg
             width="800px"
@@ -46,7 +46,7 @@ const Page = () => {
 
       <p className="text-center mt-5">
         Already have an account?{" "}
-        <Link href={"/auth/login"} className="font-bold">
+        <Link href={"/login"} className="font-bold">
           Log In
         </Link>
       </p>

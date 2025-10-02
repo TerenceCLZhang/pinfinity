@@ -18,6 +18,7 @@ import { logIn } from "@/lib/auth/actions";
 import { useState } from "react";
 import FormErrorMessage from "./FormErrorMessage";
 import { useRouter } from "next/navigation";
+import ShowPasswordBtn from "./ShowPasswordBtn";
 
 const formSchema = z.object({
   email: z.email().min(1, { message: "Required" }).trim(),
@@ -35,6 +36,7 @@ export default function LogInForm() {
 
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [viewPassword, setViewPassword] = useState(false);
 
   const router = useRouter();
 
@@ -88,21 +90,28 @@ export default function LogInForm() {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="relative">
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <Input
-                  type="password"
+                  type={viewPassword ? "text" : "password"}
                   disabled={submitting}
                   aria-disabled={submitting}
+                  className="pr-10"
                   {...field}
                 />
               </FormControl>
 
+              <ShowPasswordBtn
+                viewPassword={viewPassword}
+                setViewPassword={setViewPassword}
+                submitting={submitting}
+              />
+
               <FormMessage />
 
               <Link
-                href="/auth/forgot-password"
+                href="/forgot-password"
                 className="text-xs text-blue-600 font-semibold hover:underline"
               >
                 Forgot your password?

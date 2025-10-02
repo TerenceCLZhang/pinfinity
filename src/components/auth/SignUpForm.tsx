@@ -18,6 +18,7 @@ import { signUp } from "@/lib/auth/actions";
 import { useState } from "react";
 import FormErrorMessage from "./FormErrorMessage";
 import { useRouter } from "next/navigation";
+import ShowPasswordBtn from "./ShowPasswordBtn";
 
 const signUpFormSchema = z.object({
   firstName: z.string().min(1, { message: "Required" }).trim(),
@@ -47,6 +48,7 @@ export default function SignUpForm() {
 
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [viewPassword, setViewPassword] = useState(false);
 
   const router = useRouter();
 
@@ -163,21 +165,29 @@ export default function SignUpForm() {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="relative">
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <Input
-                  type="password"
+                  type={viewPassword ? "text" : "password"}
                   disabled={submitting}
                   aria-disabled={submitting}
+                  className="pr-10"
                   {...field}
                 />
               </FormControl>
 
+              <ShowPasswordBtn
+                viewPassword={viewPassword}
+                setViewPassword={setViewPassword}
+                submitting={submitting}
+              />
+
               <FormMessage />
 
               <FormDescription className="text-xs">
-                Password must contain 8 or more letters, numbers, and symbols
+                Password must contain <b>8 or more</b> letters, numbers, and
+                symbols
               </FormDescription>
             </FormItem>
           )}

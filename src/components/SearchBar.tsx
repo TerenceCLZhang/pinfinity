@@ -21,6 +21,7 @@ const SearchBar = () => {
 
       {search && (
         <Button
+          type="button"
           variant={"secondary"}
           size={"icon"}
           className="absolute right-5 top-1/2 -translate-y-1/2 rounded-full"

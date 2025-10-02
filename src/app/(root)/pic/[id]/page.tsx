@@ -13,7 +13,13 @@ const Page = () => {
   return (
     <main className="space-y-20">
       <div className="container flex gap-10">
-        <Button asChild variant={"link"} size={"lg"} className="size-15">
+        <Button
+          type="button"
+          asChild
+          variant={"link"}
+          size={"lg"}
+          className="size-15"
+        >
           <Link href={"/"}>
             <ArrowLeft />
           </Link>
@@ -74,6 +80,7 @@ const CommentsArea = () => {
           className="resize-none w-full break-all py-6 pr-18"
         />
         <Button
+          type="button"
           size={"icon"}
           className="absolute right-5 top-1/2 -translate-y-1/2"
         >

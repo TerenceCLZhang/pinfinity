@@ -47,7 +47,11 @@ const ImageCard = ({ src, alt }: { src: string; alt: string }) => {
 
         {hovered && (
           <>
-            <Button size={"lg"} className="absolute right-2 top-2 z-20">
+            <Button
+              type="button"
+              size={"lg"}
+              className="absolute right-2 top-2 z-20"
+            >
               Save
             </Button>
 

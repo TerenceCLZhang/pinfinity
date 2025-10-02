@@ -30,17 +30,18 @@ const Header = async () => {
           <SignOutBtn />
         ) : (
           <>
-            <Button asChild size={"lg"} className="large-btn">
-              <Link href={"/auth/login"}>Log In</Link>
+            <Button asChild type="button" size={"lg"} className="large-btn">
+              <Link href={"/login"}>Log In</Link>
             </Button>
 
             <Button
               asChild
+              type="button"
               variant={"secondary"}
               size={"lg"}
               className="large-btn"
             >
-              <Link href={"/auth/signup"}>Sign Up</Link>
+              <Link href={"/signup"}>Sign Up</Link>
             </Button>
           </>
         )}

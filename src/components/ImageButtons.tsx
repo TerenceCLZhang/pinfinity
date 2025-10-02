@@ -11,6 +11,7 @@ const ImageButtons = () => {
     <div className="flex gap-5">
       <div>
         <Button
+          type="button"
           className="space-x-2 mr-2"
           size={"icon"}
           onClick={() => setNumLikes(numLikes + 1)}
@@ -21,6 +22,7 @@ const ImageButtons = () => {
       </div>
 
       <Button
+        type="button"
         size={"icon"}
         onClick={() => {
           const commentBar = document.getElementById("comment-bar");
@@ -31,12 +33,12 @@ const ImageButtons = () => {
       </Button>
 
       <a href="/test/sample1.jpg" download="sample1.jpg">
-        <Button size={"icon"}>
+        <Button type="button" size={"icon"}>
           <Download className="w-5 h-5" />
         </Button>
       </a>
 
-      <Button>Save</Button>
+      <Button type="button">Save</Button>
     </div>
   );
 };
