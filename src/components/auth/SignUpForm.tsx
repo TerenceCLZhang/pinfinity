@@ -7,34 +7,66 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { signUp } from "@/lib/auth/actions";
+import { useState } from "react";
+import FormErrorMessage from "./FormErrorMessage";
+import { useRouter } from "next/navigation";
 
-const formSchema = z.object({
-  username: z.string().min(1).min(0),
-  email: z.string(),
-  password: z.string(),
+const signUpFormSchema = z.object({
+  firstName: z.string().min(1, { message: "Required" }).trim(),
+  lastName: z.string().min(1, { message: "Required" }).trim(),
+  username: z
+    .string()
+    .min(4, { message: "Username must be at least 4 characters long" })
+    .refine((s) => !s.includes(" "), "Password cannot contain spaces")
+    .trim(),
+  email: z.email().min(1, { message: "Required" }).trim(),
+  password: z.string().min(8, {
+    message: "Password is too short.",
+  }),
 });
 
 export default function SignUpForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof signUpFormSchema>>({
+    resolver: zodResolver(signUpFormSchema),
     defaultValues: {
+      firstName: "",
+      lastName: "",
       username: "",
       email: "",
       password: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const router = useRouter();
+
+  async function onSubmit(values: z.infer<typeof signUpFormSchema>) {
+    setSubmitting(true);
+    setErrorMessage(null);
+
     try {
-      console.log(values);
+      const res = await signUp(values);
+
+      if (res?.errorMessage) {
+        setErrorMessage(res.errorMessage);
+      }
+
+      router.push("/");
     } catch (error) {
       console.error("Form submission error", error);
+      setErrorMessage("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -44,6 +76,48 @@ export default function SignUpForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4 max-w-3xl mx-auto w-full"
       >
+        <div className="flex gap-2">
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>First Name</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    disabled={submitting}
+                    aria-disabled={submitting}
+                    {...field}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>Last Name</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    disabled={submitting}
+                    aria-disabled={submitting}
+                    {...field}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <FormField
           control={form.control}
           name="username"
@@ -52,8 +126,9 @@ export default function SignUpForm() {
               <FormLabel>Username</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter your username"
                   type="text"
+                  disabled={submitting}
+                  aria-disabled={submitting}
                   {...field}
                 />
               </FormControl>
@@ -70,7 +145,13 @@ export default function SignUpForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your email" type="email" {...field} />
+                <Input
+                  type="text"
+                  disabled={submitting}
+                  aria-disabled={submitting}
+                  inputMode="email"
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />
@@ -86,19 +167,31 @@ export default function SignUpForm() {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter your password"
                   type="password"
+                  disabled={submitting}
+                  aria-disabled={submitting}
                   {...field}
                 />
               </FormControl>
 
               <FormMessage />
+
+              <FormDescription className="text-xs">
+                Password must contain 8 or more letters, numbers, and symbols
+              </FormDescription>
             </FormItem>
           )}
         />
 
-        <Button type="submit" className="w-full mt-2" size={"lg"}>
-          Sign Up
+        <FormErrorMessage errorMessage={errorMessage} />
+
+        <Button
+          type="submit"
+          className="w-full mt-2"
+          size={"lg"}
+          disabled={submitting}
+        >
+          {submitting ? "Submitting..." : "Sign Up"}
         </Button>
       </form>
     </Form>

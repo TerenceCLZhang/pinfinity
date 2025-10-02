@@ -2,8 +2,15 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
+import SignOutBtn from "./auth/SignOutBtn";
+import { auth } from "@/lib/auth/auth";
+import { headers } from "next/headers";
 
-const Header = () => {
+const Header = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
   return (
     <header className="container flex items-center justify-between mt-8 h-12 gap-15">
       <div className="flex items-center gap-10 h-full">
@@ -19,18 +26,24 @@ const Header = () => {
       <SearchBar />
 
       <div className="space-x-2 h-full">
-        <Button asChild size={"lg"} className="text-base h-full">
-          <Link href={"/auth/login"}>Log In</Link>
-        </Button>
+        {session ? (
+          <SignOutBtn />
+        ) : (
+          <>
+            <Button asChild size={"lg"} className="large-btn">
+              <Link href={"/auth/login"}>Log In</Link>
+            </Button>
 
-        <Button
-          asChild
-          variant={"secondary"}
-          size={"lg"}
-          className="text-base h-full"
-        >
-          <Link href={"/auth/signup"}>Sign Up</Link>
-        </Button>
+            <Button
+              asChild
+              variant={"secondary"}
+              size={"lg"}
+              className="large-btn"
+            >
+              <Link href={"/auth/signup"}>Sign Up</Link>
+            </Button>
+          </>
+        )}
       </div>
     </header>
   );

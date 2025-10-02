@@ -14,11 +14,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { logIn } from "@/lib/auth/actions";
+import { useState } from "react";
+import FormErrorMessage from "./FormErrorMessage";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
-  username: z.string().min(1).min(0),
-  email: z.string(),
-  password: z.string(),
+  email: z.email().min(1, { message: "Required" }).trim(),
+  password: z.string().min(1, { message: "Required" }),
 });
 
 export default function LogInForm() {
@@ -30,11 +33,27 @@ export default function LogInForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const router = useRouter();
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setSubmitting(true);
+    setErrorMessage(null);
+
     try {
-      console.log(values);
+      const res = await logIn(values);
+
+      if (res?.errorMessage) {
+        setErrorMessage(res.errorMessage);
+      }
+
+      router.push("/");
     } catch (error) {
       console.error("Form submission error", error);
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -51,7 +70,13 @@ export default function LogInForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your email" type="text" {...field} />
+                <Input
+                  type="text"
+                  disabled={submitting}
+                  aria-disabled={submitting}
+                  inputMode="email"
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />
@@ -67,8 +92,9 @@ export default function LogInForm() {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter your password"
                   type="password"
+                  disabled={submitting}
+                  aria-disabled={submitting}
                   {...field}
                 />
               </FormControl>
@@ -85,8 +111,15 @@ export default function LogInForm() {
           )}
         />
 
-        <Button type="submit" className="w-full mt-2" size={"lg"}>
-          Log In
+        <FormErrorMessage errorMessage={errorMessage} />
+
+        <Button
+          type="submit"
+          disabled={submitting}
+          className="w-full mt-2"
+          size={"lg"}
+        >
+          {submitting ? "Submitting..." : "Log In"}
         </Button>
       </form>
     </Form>

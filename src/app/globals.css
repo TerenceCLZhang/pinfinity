@@ -161,15 +161,10 @@
   h1 {
     @apply text-primary font-bold;
   }
+}
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  span {
-    @apply break-all;
+@layer components {
+  .large-btn {
+    @apply !text-base !h-full;
   }
 }

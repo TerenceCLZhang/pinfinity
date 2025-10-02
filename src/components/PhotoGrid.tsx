@@ -33,14 +33,14 @@ const ImageCard = ({ src, alt }: { src: string; alt: string }) => {
     >
       {!loaded && <Skeleton className="w-full h-[300px] rounded-lg" />}
 
-      <Link href={"#"}>
+      <Link href={"/pic/abc"}>
         <Image
           src={src}
           alt={alt}
           width={500}
           height={500}
           onLoad={() => setLoaded(true)}
-          className={`w-auto h-auto transition-all duration-500 ${
+          className={`w-full h-auto transition-all duration-500 ${
             loaded ? "opacity-100" : "opacity-0 absolute"
           } group-hover:shadow-inner`}
         />
