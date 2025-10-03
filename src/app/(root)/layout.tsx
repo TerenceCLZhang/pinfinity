@@ -1,17 +1,5 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "../globals.css";
 import Header from "@/components/Header";
-
-const inter = Inter({
-  variable: "--font-sans-serif",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Pinfinity",
-  description: "A Pinterest clone made in Next.js",
-};
 
 export default function RootLayout({
   children,
@@ -19,13 +7,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${inter.variable} antialiased flex flex-col items-center justify-center gap-15`}
-      >
-        <Header />
-        {children}
-      </body>
-    </html>
+    <>
+      <Header />
+      {children}
+    </>
   );
 }
