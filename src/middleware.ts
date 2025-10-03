@@ -16,5 +16,5 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   runtime: "nodejs",
-  matcher: ["/settings"], // Apply middleware to specific routes
+  matcher: ["/settings", "/create", "/edit/:path*"], // Apply middleware to specific routes
 };

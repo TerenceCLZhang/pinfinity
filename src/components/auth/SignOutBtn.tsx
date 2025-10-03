@@ -22,7 +22,7 @@ const SignOutBtn = () => {
     <Button
       type="button"
       size={"lg"}
-      className="large-btn"
+      className="header-btn"
       onClick={handleLogOut}
     >
       Log Out

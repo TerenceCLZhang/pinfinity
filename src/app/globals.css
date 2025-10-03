@@ -168,8 +168,8 @@
 }
 
 @layer components {
-  .large-btn {
-    @apply !text-base !h-full;
+  .header-btn {
+    @apply !h-full;
   }
 
   .auth-form {

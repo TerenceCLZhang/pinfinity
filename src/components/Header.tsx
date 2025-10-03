@@ -5,6 +5,7 @@ import SearchBar from "./SearchBar";
 import SignOutBtn from "./auth/SignOutBtn";
 import { auth } from "@/lib/auth/auth";
 import { headers } from "next/headers";
+import UserAvatar from "./UserAvatar";
 
 const Header = async () => {
   const session = await auth.api.getSession({
@@ -27,10 +28,16 @@ const Header = async () => {
 
       <div className="space-x-2 h-full">
         {session ? (
-          <SignOutBtn />
+          <div className="h-full flex flex-row items-center">
+            <Button type="button" size={"lg"} className="header-btn">
+              <Link href={"/create"}>Create</Link>
+            </Button>
+            <UserAvatar user={session.user} />
+            <SignOutBtn />
+          </div>
         ) : (
           <>
-            <Button asChild type="button" size={"lg"} className="large-btn">
+            <Button asChild type="button" size={"lg"} className="header-btn">
               <Link href={"/login"}>Log In</Link>
             </Button>
 
@@ -39,7 +46,7 @@ const Header = async () => {
               type="button"
               variant={"secondary"}
               size={"lg"}
-              className="large-btn"
+              className="header-btn"
             >
               <Link href={"/signup"}>Sign Up</Link>
             </Button>
