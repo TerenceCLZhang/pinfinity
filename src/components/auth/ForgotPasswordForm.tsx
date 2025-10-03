@@ -13,52 +13,57 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { logIn } from "@/lib/auth/actions";
 import { useState } from "react";
 import FormStatusMessage from "./FormStatusMessage";
-import { useRouter } from "next/navigation";
-import { PasswordInput } from "../ui/password-input";
+import { requestPasswordReset } from "@/lib/auth/actions";
 
 const formSchema = z.object({
   email: z.email().trim(),
-  password: z.string().min(1, { message: "Required" }),
 });
 
-export default function LogInForm() {
+export default function ForgotPasswordForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  const router = useRouter();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setSubmitting(true);
-    setErrorMessage(null);
+    setMessage(null);
+    setError(false);
 
     try {
-      const res = await logIn(values);
+      const res = await requestPasswordReset({
+        email: values.email,
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
 
       if (res?.errorMessage) {
-        setErrorMessage(res.errorMessage);
+        setMessage(res.errorMessage);
+        setError(true);
       } else {
-        router.push("/");
+        setMessage("Check your email for the reset link.");
+        setSuccess(true);
       }
     } catch (error) {
       console.error("Form submission error", error);
+      setError(true);
+      setMessage("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
   }
 
-  return (
+  return success ? (
+    <FormStatusMessage message={message} error={error} />
+  ) : (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
         <FormField
@@ -69,27 +74,9 @@ export default function LogInForm() {
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
+                  placeholder=""
                   type="text"
-                  disabled={submitting}
-                  aria-disabled={submitting}
                   inputMode="email"
-                  {...field}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem className="relative">
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <PasswordInput
                   disabled={submitting}
                   aria-disabled={submitting}
                   {...field}
@@ -97,26 +84,14 @@ export default function LogInForm() {
               </FormControl>
 
               <FormMessage />
-
-              <Link
-                href="/forgot-password"
-                className="text-xs text-blue-600 font-semibold hover:underline"
-              >
-                Forgot your password?
-              </Link>
             </FormItem>
           )}
         />
 
-        <FormStatusMessage message={errorMessage} />
+        <FormStatusMessage message={message} error={error} />
 
-        <Button
-          type="submit"
-          disabled={submitting}
-          className="w-full mt-2"
-          size={"lg"}
-        >
-          {submitting ? "Submitting..." : "Log In"}
+        <Button type="submit" disabled={submitting}>
+          {submitting ? "Searching..." : "Search"}
         </Button>
       </form>
     </Form>

@@ -46,19 +46,15 @@ const ImageCard = ({ src, alt }: { src: string; alt: string }) => {
         />
 
         {hovered && (
-          <>
-            <Button
-              type="button"
-              size={"lg"}
-              className="absolute right-2 top-2 z-20"
-            >
-              Save
-            </Button>
-
-            <div className="absolute top-0 left-0 h-full w-full bg-black/25" />
-          </>
+          <div className="absolute top-0 left-0 h-full w-full bg-black/25" />
         )}
       </Link>
+
+      {hovered && (
+        <Button type="button" size={"lg"} className="absolute right-2 top-2">
+          Save
+        </Button>
+      )}
     </div>
   );
 };

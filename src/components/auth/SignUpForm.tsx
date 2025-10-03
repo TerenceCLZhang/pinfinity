@@ -16,9 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { signUp } from "@/lib/auth/actions";
 import { useState } from "react";
-import FormErrorMessage from "./FormErrorMessage";
-import { useRouter } from "next/navigation";
-import ShowPasswordBtn from "./ShowPasswordBtn";
+import FormStatusMessage from "./FormStatusMessage";
+import { PasswordInput } from "../ui/password-input";
 
 const signUpFormSchema = z.object({
   firstName: z.string().min(1, { message: "Required" }).trim(),
@@ -26,9 +25,9 @@ const signUpFormSchema = z.object({
   username: z
     .string()
     .min(4, { message: "Username must be at least 4 characters long" })
-    .refine((s) => !s.includes(" "), "Password cannot contain spaces")
+    .refine((s) => !s.includes(" "), "Username cannot contain spaces")
     .trim(),
-  email: z.email().min(1, { message: "Required" }).trim(),
+  email: z.email().trim(),
   password: z.string().min(8, {
     message: "Password is too short.",
   }),
@@ -47,26 +46,27 @@ export default function SignUpForm() {
   });
 
   const [submitting, setSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [viewPassword, setViewPassword] = useState(false);
-
-  const router = useRouter();
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState(false);
 
   async function onSubmit(values: z.infer<typeof signUpFormSchema>) {
     setSubmitting(true);
-    setErrorMessage(null);
+    setError(false);
+    setMessage(null);
 
     try {
       const res = await signUp(values);
 
       if (res?.errorMessage) {
-        setErrorMessage(res.errorMessage);
+        setMessage(res.errorMessage);
+        setError(true);
+      } else {
+        setMessage("A validation link has been sent to your email.");
       }
-
-      router.push("/");
     } catch (error) {
       console.error("Form submission error", error);
-      setErrorMessage("Something went wrong. Please try again.");
+      setMessage("Something went wrong. Please try again.");
+      setError(true);
     } finally {
       setSubmitting(false);
     }
@@ -74,10 +74,7 @@ export default function SignUpForm() {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 max-w-3xl mx-auto w-full"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
         <div className="flex gap-2">
           <FormField
             control={form.control}
@@ -168,20 +165,12 @@ export default function SignUpForm() {
             <FormItem className="relative">
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input
-                  type={viewPassword ? "text" : "password"}
+                <PasswordInput
                   disabled={submitting}
                   aria-disabled={submitting}
-                  className="pr-10"
                   {...field}
                 />
               </FormControl>
-
-              <ShowPasswordBtn
-                viewPassword={viewPassword}
-                setViewPassword={setViewPassword}
-                submitting={submitting}
-              />
 
               <FormMessage />
 
@@ -193,7 +182,7 @@ export default function SignUpForm() {
           )}
         />
 
-        <FormErrorMessage errorMessage={errorMessage} />
+        <FormStatusMessage message={message} error={error} />
 
         <Button
           type="submit"

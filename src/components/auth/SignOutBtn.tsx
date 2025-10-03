@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
-import { signOut } from "@/lib/auth/auth-client";
+import { authClient } from "@/lib/auth/auth-client";
 
 const SignOutBtn = () => {
   const router = useRouter();
 
   const handleLogOut = async () => {
-    await signOut({
+    await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
           router.push("/");
@@ -22,7 +22,7 @@ const SignOutBtn = () => {
     <Button
       type="button"
       size={"lg"}
-      className="large-btn cursor-pointer"
+      className="large-btn"
       onClick={handleLogOut}
     >
       Log Out

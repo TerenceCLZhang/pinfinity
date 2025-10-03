@@ -74,15 +74,18 @@ const CommentsArea = () => {
     <div className="space-y-4">
       <FullComment />
       <div className="relative">
+        <label htmlFor="comment-bar" className="sr-only">
+          Enter your comment
+        </label>
         <Input
           id="comment-bar"
           placeholder="Add a comment"
-          className="resize-none w-full break-all py-6 pr-18"
+          className="resize-none w-full break-all py-6 pr-15"
         />
         <Button
           type="button"
           size={"icon"}
-          className="absolute right-5 top-1/2 -translate-y-1/2"
+          className="absolute right-2 top-1/2 -translate-y-1/2"
         >
           <SendHorizonal />
         </Button>

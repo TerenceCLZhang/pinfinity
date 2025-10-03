@@ -161,10 +161,22 @@
   h1 {
     @apply text-primary font-bold;
   }
+
+  button {
+    @apply cursor-pointer;
+  }
 }
 
 @layer components {
   .large-btn {
     @apply !text-base !h-full;
+  }
+
+  .auth-form {
+    @apply space-y-4 max-w-3xl mx-auto w-full;
+  }
+
+  .auth-page-container {
+    @apply container flex flex-col gap-5;
   }
 }
