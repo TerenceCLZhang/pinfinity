@@ -7,7 +7,7 @@ const GoogleSocialAuth = ({ text }: { text: string }) => {
   const handleSocialAuth = async () => {
     await authClient.signIn.social({
       provider: "google",
-      callbackURL: "/",
+      callbackURL: "/create-username",
     });
   };
 

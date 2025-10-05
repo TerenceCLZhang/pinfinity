@@ -14,68 +14,68 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import FormStatusMessage from "./FormStatusMessage";
-import { requestPasswordReset } from "@/lib/auth/actions";
+import axios from "axios";
 
 const formSchema = z.object({
-  email: z.email().trim(),
+  username: z
+    .string()
+    .min(4, { message: "Username must be at least 4 characters long" })
+    .refine((s) => !s.includes(" "), "Username cannot contain spaces")
+    .trim(),
 });
 
-export default function ForgotPasswordForm() {
+export default function CreateUsernameForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      username: "",
     },
   });
 
+  const router = useRouter();
+
   const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setSubmitting(true);
     setMessage(null);
-    setError(false);
 
     try {
-      const res = await requestPasswordReset({
-        email: values.email,
-        redirectTo: `${window.location.origin}/reset-password`,
+      const res = await axios.post("/api/users/create-username", {
+        username: values.username,
       });
 
-      if (res?.errorMessage) {
-        setMessage(res.errorMessage);
-        setError(true);
+      if (res.data.success) {
+        router.push("/");
       } else {
-        setMessage("Check your email for the reset link.");
-        setSuccess(true);
+        setMessage(res.data.errorMessage || "Something went wrong");
       }
-    } catch (error) {
-      setError(true);
-      setMessage("Something went wrong. Please try again.");
+    } catch (error: any) {
+      if (error.response?.data?.errorMessage) {
+        setMessage(error.response.data.errorMessage);
+      } else {
+        setMessage("Something went wrong. Please try again.");
+      }
     } finally {
       setSubmitting(false);
     }
   }
 
-  return success ? (
-    <FormStatusMessage message={message} error={error} />
-  ) : (
+  return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
         <FormField
           control={form.control}
-          name="email"
+          name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Username</FormLabel>
               <FormControl>
                 <Input
-                  placeholder=""
                   type="text"
-                  inputMode="email"
                   disabled={submitting}
                   aria-disabled={submitting}
                   {...field}
@@ -87,10 +87,10 @@ export default function ForgotPasswordForm() {
           )}
         />
 
-        <FormStatusMessage message={message} error={error} />
+        <FormStatusMessage message={message} />
 
         <Button type="submit" disabled={submitting}>
-          {submitting ? "Searching..." : "Search"}
+          {submitting ? "Submitting..." : "Submit"}
         </Button>
       </form>
     </Form>

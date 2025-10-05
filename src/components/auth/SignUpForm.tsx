@@ -64,7 +64,6 @@ export default function SignUpForm() {
         setMessage("A validation link has been sent to your email.");
       }
     } catch (error) {
-      console.error("Form submission error", error);
       setMessage("Something went wrong. Please try again.");
       setError(true);
     } finally {

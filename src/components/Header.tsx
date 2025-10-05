@@ -2,10 +2,10 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
-import SignOutBtn from "./auth/SignOutBtn";
 import { auth } from "@/lib/auth/auth";
 import { headers } from "next/headers";
-import UserAvatar from "./UserAvatar";
+import AvatarDropDown from "./AvatarDropDown";
+import { PlusIcon } from "lucide-react";
 
 const Header = async () => {
   const session = await auth.api.getSession({
@@ -13,14 +13,20 @@ const Header = async () => {
   });
 
   return (
-    <header className="container flex items-center justify-between mt-8 h-12 gap-15">
+    <header className="container flex items-center justify-between mt-8 gap-15">
       <div className="flex items-center gap-10 h-full">
         <Link
-          href={"/"}
+          href="/"
           className="flex items-center gap-2 hover:opacity-85 h-full"
         >
-          <Image src={"/logo.svg"} alt="logo" width={35} height={35} />
-          <h1 className="text-3xl">Pinfinity</h1>
+          <Image
+            src="/logo.svg"
+            alt="logo"
+            width={35}
+            height={35}
+            className="align-middle"
+          />
+          <h1 className="text-3xl leading-none">Pinfinity</h1>
         </Link>
       </div>
 
@@ -28,26 +34,21 @@ const Header = async () => {
 
       <div className="space-x-2 h-full">
         {session ? (
-          <div className="h-full flex flex-row items-center">
-            <Button type="button" size={"lg"} className="header-btn">
-              <Link href={"/create"}>Create</Link>
+          <div className="h-full flex flex-row items-center gap-5">
+            <Button asChild type="button" size={"lg"}>
+              <Link href={"/create"} className="inline-flex items-center gap-2">
+                <PlusIcon /> Create
+              </Link>
             </Button>
-            <UserAvatar user={session.user} />
-            <SignOutBtn />
+            <AvatarDropDown user={session.user} />
           </div>
         ) : (
           <>
-            <Button asChild type="button" size={"lg"} className="header-btn">
+            <Button asChild type="button" size={"lg"}>
               <Link href={"/login"}>Log In</Link>
             </Button>
 
-            <Button
-              asChild
-              type="button"
-              variant={"secondary"}
-              size={"lg"}
-              className="header-btn"
-            >
+            <Button asChild type="button" variant={"secondary"} size={"lg"}>
               <Link href={"/signup"}>Sign Up</Link>
             </Button>
           </>

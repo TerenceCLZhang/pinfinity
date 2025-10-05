@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Button } from "../ui/button";
 import { authClient } from "@/lib/auth/auth-client";
+import { DropdownMenuItem } from "../ui/dropdown-menu";
 
 const SignOutBtn = () => {
   const router = useRouter();
@@ -19,14 +19,12 @@ const SignOutBtn = () => {
   };
 
   return (
-    <Button
-      type="button"
-      size={"lg"}
-      className="header-btn"
+    <DropdownMenuItem
+      className="hover:bg-secondary cursor-pointer"
       onClick={handleLogOut}
     >
       Log Out
-    </Button>
+    </DropdownMenuItem>
   );
 };
 

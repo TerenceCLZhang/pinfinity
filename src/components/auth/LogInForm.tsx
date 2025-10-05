@@ -52,7 +52,7 @@ export default function LogInForm() {
         router.push("/");
       }
     } catch (error) {
-      console.error("Form submission error", error);
+      setErrorMessage("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }

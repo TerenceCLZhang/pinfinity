@@ -73,7 +73,6 @@ export default function ResetPasswordForm() {
         setTimeout(() => router.push("/login"), 5000);
       }
     } catch (error) {
-      console.error("Form submission error", error);
       setError(true);
       setMessage("Something went wrong. Please try again.");
     } finally {
