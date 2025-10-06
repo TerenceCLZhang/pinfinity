@@ -16,8 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { signUp } from "@/lib/auth/actions";
 import { useState } from "react";
-import FormStatusMessage from "./FormStatusMessage";
 import { PasswordInput } from "../ui/password-input";
+import toast from "react-hot-toast";
 
 const signUpFormSchema = z.object({
   firstName: z.string().min(1, { message: "Required" }).trim(),
@@ -46,26 +46,20 @@ export default function SignUpForm() {
   });
 
   const [submitting, setSubmitting] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState(false);
 
   async function onSubmit(values: z.infer<typeof signUpFormSchema>) {
     setSubmitting(true);
-    setError(false);
-    setMessage(null);
 
     try {
       const res = await signUp(values);
 
-      if (res?.errorMessage) {
-        setMessage(res.errorMessage);
-        setError(true);
+      if (res.success) {
+        toast.success(res.message);
       } else {
-        setMessage("A validation link has been sent to your email.");
+        toast.error(res.message);
       }
     } catch (error) {
-      setMessage("Something went wrong. Please try again.");
-      setError(true);
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -180,8 +174,6 @@ export default function SignUpForm() {
             </FormItem>
           )}
         />
-
-        <FormStatusMessage message={message} error={error} />
 
         <Button
           type="submit"

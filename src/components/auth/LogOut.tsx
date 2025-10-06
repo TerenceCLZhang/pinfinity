@@ -1,17 +1,18 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth/auth-client";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
+import { Dispatch, SetStateAction } from "react";
 
-const SignOutBtn = () => {
-  const router = useRouter();
-
+const SignOutBtn = ({
+  setOpen,
+}: {
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
   const handleLogOut = async () => {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          router.push("/");
           window.location.reload();
         },
       },
@@ -21,7 +22,10 @@ const SignOutBtn = () => {
   return (
     <DropdownMenuItem
       className="hover:bg-secondary cursor-pointer"
-      onClick={handleLogOut}
+      onClick={() => {
+        handleLogOut();
+        setOpen(false);
+      }}
     >
       Log Out
     </DropdownMenuItem>

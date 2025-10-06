@@ -16,9 +16,9 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { logIn } from "@/lib/auth/actions";
 import { useState } from "react";
-import FormStatusMessage from "./FormStatusMessage";
 import { useRouter } from "next/navigation";
 import { PasswordInput } from "../ui/password-input";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
   email: z.email().trim(),
@@ -35,24 +35,22 @@ export default function LogInForm() {
   });
 
   const [submitting, setSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const router = useRouter();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setSubmitting(true);
-    setErrorMessage(null);
 
     try {
       const res = await logIn(values);
 
-      if (res?.errorMessage) {
-        setErrorMessage(res.errorMessage);
-      } else {
+      if (res.success) {
         router.push("/");
+      } else {
+        toast.error(res.message || "Log in failed.");
       }
     } catch (error) {
-      setErrorMessage("Something went wrong. Please try again.");
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -107,8 +105,6 @@ export default function LogInForm() {
             </FormItem>
           )}
         />
-
-        <FormStatusMessage message={errorMessage} />
 
         <Button
           type="submit"

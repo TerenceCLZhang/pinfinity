@@ -22,31 +22,47 @@ export const signUp = async (data: {
         password,
       },
     });
+
+    return {
+      success: true,
+      message: "A validation link has been sent to your email.",
+    };
   } catch (error) {
     console.error(error);
 
     if (error instanceof APIError) {
       switch (error.status) {
         case "UNPROCESSABLE_ENTITY":
-          return { errorMessage: "An account with that email already exists." };
+          return {
+            success: false,
+            message: "An account with that email already exists.",
+          };
 
         case "BAD_REQUEST":
           return {
-            errorMessage: "Username is already taken. Please try another.",
+            success: false,
+            message: "Username is already taken. Please try another.",
           };
 
         case "INTERNAL_SERVER_ERROR":
-          return { errorMessage: "Server error. Please try again later." };
+          return {
+            success: false,
+            message: "Server error. Please try again later.",
+          };
 
         default:
           return {
-            errorMessage:
+            success: false,
+            message:
               error.body?.message ||
               "Unexpected error occurred. Please try again.",
           };
       }
     } else {
-      return { errorMessage: "Unexpected error occurred. Please try again." };
+      return {
+        success: false,
+        message: "Unexpected error occurred. Please try again.",
+      };
     }
   }
 };
@@ -61,20 +77,29 @@ export const logIn = async (data: { email: string; password: string }) => {
         password,
       },
     });
+
+    return { success: true };
   } catch (error) {
     console.error(error);
 
     if (error instanceof APIError) {
       switch (error.status) {
         case "UNAUTHORIZED":
-          return { errorMessage: "Incorrect email or password." };
+          return {
+            success: false,
+            message: "Incorrect email or password.",
+          };
         default:
           return {
-            errorMessage: "Unexpected error occurred. Please try again.",
+            success: false,
+            message: "Unexpected error occurred. Please try again.",
           };
       }
     } else {
-      return { errorMessage: "Unexpected error occurred. Please try again." };
+      return {
+        success: false,
+        message: "Unexpected error occurred. Please try again.",
+      };
     }
   }
 };
@@ -90,7 +115,7 @@ export const requestPasswordReset = async ({
     const user = await db.user.findUnique({ where: { email } });
 
     if (!user) {
-      return { errorMessage: "Account not found." };
+      return { success: false, message: "Account not found." };
     }
 
     await auth.api.requestPasswordReset({
@@ -99,9 +124,14 @@ export const requestPasswordReset = async ({
         redirectTo,
       },
     });
+
+    return { success: true, message: "Check your email for the reset link." };
   } catch (error) {
-    console.log(error);
-    return { errorMessage: "Something went wrong. Please try again." };
+    console.error(error);
+    return {
+      success: false,
+      message: "Something went wrong. Please try again.",
+    };
   }
 };
 
@@ -113,7 +143,16 @@ export const resetPassword = async (newPassword: string, token: string) => {
         token,
       },
     });
+
+    return {
+      success: true,
+      message:
+        "Password reset! You will automatically be brought to the login page in 5 seconds.",
+    };
   } catch (error) {
-    return { errorMessage: "Something went wrong. Please try again." };
+    return {
+      success: false,
+      message: "Something went wrong. Please try again.",
+    };
   }
 };

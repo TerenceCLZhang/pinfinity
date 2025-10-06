@@ -14,9 +14,9 @@ import {
 } from "@/components/ui/form";
 import { PasswordInput } from "@/components/ui/password-input";
 import { useEffect, useState } from "react";
-import FormStatusMessage from "./FormStatusMessage";
 import { useRouter, useSearchParams } from "next/navigation";
 import { resetPassword } from "@/lib/auth/actions";
+import toast from "react-hot-toast";
 
 const formSchema = z
   .object({
@@ -37,9 +37,6 @@ export default function ResetPasswordForm() {
     },
   });
 
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const searchParams = useSearchParams();
@@ -56,33 +53,24 @@ export default function ResetPasswordForm() {
     if (!token) return;
 
     setSubmitting(true);
-    setError(false);
-    setMessage(null);
 
     try {
       const res = await resetPassword(values.password, token);
 
-      if (res?.errorMessage) {
-        setError(true);
-        setMessage(res.errorMessage);
+      if (res.success) {
+        toast.success(res.message);
+        setTimeout(() => router.push("/login"), 0);
       } else {
-        setMessage(
-          "Password reset! You will automatically be brought to the login page in 5 seconds."
-        );
-        setSuccess(true);
-        setTimeout(() => router.push("/login"), 5000);
+        toast.error(res.message);
       }
     } catch (error) {
-      setError(true);
-      setMessage("Something went wrong. Please try again.");
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
   }
 
-  return success ? (
-    <FormStatusMessage message={message} error={error} />
-  ) : (
+  return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
         <FormField
@@ -122,8 +110,6 @@ export default function ResetPasswordForm() {
             </FormItem>
           )}
         />
-
-        <FormStatusMessage message={message} error={error} />
 
         <Button type="submit" size={"lg"} disabled={submitting}>
           {submitting ? "Submitting..." : "Submit"}

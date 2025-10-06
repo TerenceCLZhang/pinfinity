@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
@@ -11,6 +13,7 @@ import {
 } from "./ui/dropdown-menu";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
 import LogOut from "./auth/LogOut";
+import { useState } from "react";
 
 const AvatarDropDown = ({
   user,
@@ -27,8 +30,10 @@ const AvatarDropDown = ({
     displayUsername?: string | null | undefined;
   };
 }) => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger className="hover:opacity-75 rounded-full">
         <UserAvatar
           username={user?.displayUsername ?? "User"}
@@ -48,12 +53,25 @@ const AvatarDropDown = ({
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="hover:bg-secondary">
+          <DropdownMenuItem
+            className="hover:bg-secondary"
+            onClick={() => setOpen(false)}
+          >
             <Link href={`/profile/${user.username}`} className="w-full">
               My Profile
             </Link>
           </DropdownMenuItem>
-          <LogOut />
+
+          <DropdownMenuItem
+            className="hover:bg-secondary"
+            onClick={() => setOpen(false)}
+          >
+            <Link href={"/profile/edit"} className="w-full">
+              Edit my Profile
+            </Link>
+          </DropdownMenuItem>
+
+          <LogOut setOpen={setOpen} />
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -69,7 +87,7 @@ const UserAvatar = ({
 }) => {
   return (
     <Avatar className="size-10">
-      <AvatarImage src={image} className="object-cover" />
+      {image && <AvatarImage src={image} />}
       <AvatarFallback className="bg-primary text-xl text-white">
         {username.charAt(0)}
       </AvatarFallback>

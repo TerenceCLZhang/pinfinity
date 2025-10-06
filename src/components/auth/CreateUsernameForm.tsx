@@ -15,8 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import FormStatusMessage from "./FormStatusMessage";
-import axios from "axios";
+import { setUsername } from "@/lib/user/actions";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
   username: z
@@ -36,29 +36,21 @@ export default function CreateUsernameForm() {
 
   const router = useRouter();
 
-  const [message, setMessage] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setSubmitting(true);
-    setMessage(null);
 
     try {
-      const res = await axios.post("/api/users/create-username", {
-        username: values.username,
-      });
+      const res = await setUsername(values.username);
 
-      if (res.data.success) {
+      if (res.success) {
         router.push("/");
       } else {
-        setMessage(res.data.errorMessage || "Something went wrong");
+        toast.error(res.message);
       }
     } catch (error: any) {
-      if (error.response?.data?.errorMessage) {
-        setMessage(error.response.data.errorMessage);
-      } else {
-        setMessage("Something went wrong. Please try again.");
-      }
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -86,8 +78,6 @@ export default function CreateUsernameForm() {
             </FormItem>
           )}
         />
-
-        <FormStatusMessage message={message} />
 
         <Button type="submit" disabled={submitting}>
           {submitting ? "Submitting..." : "Submit"}

@@ -28,6 +28,8 @@ model User {
   username        String?
   displayUsername String?
 
+  about String?
+
   @@unique([email])
   @@unique([username])
   @@map("user")

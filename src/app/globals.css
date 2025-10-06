@@ -175,4 +175,8 @@
   .auth-page-container {
     @apply container flex flex-col gap-5;
   }
+
+  .underline-btn-underline {
+    @apply underline underline-offset-10 decoration-2;
+  }
 }

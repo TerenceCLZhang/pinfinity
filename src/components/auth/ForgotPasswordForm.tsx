@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import FormStatusMessage from "./FormStatusMessage";
 import { requestPasswordReset } from "@/lib/auth/actions";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
   email: z.email().trim(),
@@ -29,15 +29,10 @@ export default function ForgotPasswordForm() {
     },
   });
 
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setSubmitting(true);
-    setMessage(null);
-    setError(false);
 
     try {
       const res = await requestPasswordReset({
@@ -45,24 +40,19 @@ export default function ForgotPasswordForm() {
         redirectTo: `${window.location.origin}/reset-password`,
       });
 
-      if (res?.errorMessage) {
-        setMessage(res.errorMessage);
-        setError(true);
+      if (res.success) {
+        toast.success(res.message);
       } else {
-        setMessage("Check your email for the reset link.");
-        setSuccess(true);
+        toast.error(res.message);
       }
     } catch (error) {
-      setError(true);
-      setMessage("Something went wrong. Please try again.");
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
   }
 
-  return success ? (
-    <FormStatusMessage message={message} error={error} />
-  ) : (
+  return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
         <FormField
@@ -86,8 +76,6 @@ export default function ForgotPasswordForm() {
             </FormItem>
           )}
         />
-
-        <FormStatusMessage message={message} error={error} />
 
         <Button type="submit" disabled={submitting}>
           {submitting ? "Searching..." : "Search"}
