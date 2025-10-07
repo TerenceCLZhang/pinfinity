@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({
   variable: "--font-sans-serif",
@@ -21,8 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} antialiased min-h-screen`}>
-        {children}
+        <NextTopLoader color="#e60023" showSpinner={false} />
         <Toaster />
+        {children}
       </body>
     </html>
   );

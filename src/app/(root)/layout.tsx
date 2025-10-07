@@ -3,6 +3,7 @@ import "../globals.css";
 import Header from "@/components/Header";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import SessionSync from "@/components/SessionSync";
 
 export default async function RootLayout({
   children,
@@ -20,8 +21,10 @@ export default async function RootLayout({
 
   return (
     <div className="flex flex-col items-center justify-center gap-15">
-      <Header />
-      {children}
+      <SessionSync user={session?.user}>
+        <Header />
+        {children}
+      </SessionSync>
     </div>
   );
 }

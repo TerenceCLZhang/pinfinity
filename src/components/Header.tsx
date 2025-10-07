@@ -40,7 +40,7 @@ const Header = async () => {
                 <PlusIcon /> Create
               </Link>
             </Button>
-            <AvatarDropDown user={session.user} />
+            <AvatarDropDown />
           </div>
         ) : (
           <>

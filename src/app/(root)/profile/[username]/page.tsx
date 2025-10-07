@@ -1,6 +1,6 @@
 import ProfilePins from "@/components/ProfilePins";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import UserAvatar from "@/components/UserAvatar";
 import { auth } from "@/lib/auth/auth";
 import { db } from "@/lib/prisma";
 import { headers } from "next/headers";
@@ -26,12 +26,12 @@ const Page = async ({ params }: { params: { username: string } }) => {
   return (
     <div className="container flex flex-col gap-10">
       <div className="flex flex-col items-center justify-center gap-4">
-        <Avatar className="size-40">
-          {user.image && <AvatarImage src={user.image} />}
-          <AvatarFallback className="bg-primary text-white text-8xl">
-            {user.displayUsername?.charAt(0)}
-          </AvatarFallback>
-        </Avatar>
+        <UserAvatar
+          image={user.image as string}
+          username={user.displayUsername as string}
+          className="size-40"
+          textSize="text-8xl"
+        />
         <div className="text-center space-y-2">
           <h2 className="text-4xl">{user.name}</h2>
           <span className="text-sm italic">@{user.displayUsername}</span>

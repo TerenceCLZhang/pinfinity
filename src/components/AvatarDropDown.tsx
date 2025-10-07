@@ -1,8 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-
 import {
   DropdownMenuItem,
   DropdownMenu,
@@ -14,23 +12,14 @@ import {
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
 import LogOut from "./auth/LogOut";
 import { useState } from "react";
+import UserAvatar from "./UserAvatar";
+import { useUserStore } from "@/stores/userStore";
 
-const AvatarDropDown = ({
-  user,
-}: {
-  user: {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    email: string;
-    emailVerified: boolean;
-    name: string;
-    image?: string | null | undefined | undefined;
-    username?: string | null | undefined;
-    displayUsername?: string | null | undefined;
-  };
-}) => {
+const AvatarDropDown = () => {
   const [open, setOpen] = useState(false);
+
+  const user = useUserStore((state) => state.user);
+  if (!user) return;
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -38,6 +27,7 @@ const AvatarDropDown = ({
         <UserAvatar
           username={user?.displayUsername ?? "User"}
           image={user.image ?? ""}
+          className={"size-10"}
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -45,6 +35,7 @@ const AvatarDropDown = ({
           <UserAvatar
             username={user?.displayUsername ?? "User"}
             image={user.image ?? ""}
+            className={"size-10"}
           />
           <div className="flex flex-col">
             <span>{user.name}</span>
@@ -75,23 +66,6 @@ const AvatarDropDown = ({
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
-};
-
-const UserAvatar = ({
-  username,
-  image,
-}: {
-  username: string;
-  image: string;
-}) => {
-  return (
-    <Avatar className="size-10">
-      {image && <AvatarImage src={image} />}
-      <AvatarFallback className="bg-primary text-xl text-white">
-        {username.charAt(0)}
-      </AvatarFallback>
-    </Avatar>
   );
 };
 

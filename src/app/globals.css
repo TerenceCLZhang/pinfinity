@@ -179,4 +179,8 @@
   .underline-btn-underline {
     @apply underline underline-offset-10 decoration-2;
   }
+
+  .form-description-sm {
+    @apply text-xs italic;
+  }
 }

@@ -3,6 +3,7 @@
 import { authClient } from "@/lib/auth/auth-client";
 import { DropdownMenuItem } from "../ui/dropdown-menu";
 import { Dispatch, SetStateAction } from "react";
+import { redirect } from "next/navigation";
 
 const SignOutBtn = ({
   setOpen,
@@ -14,6 +15,7 @@ const SignOutBtn = ({
       fetchOptions: {
         onSuccess: () => {
           window.location.reload();
+          redirect("/");
         },
       },
     });

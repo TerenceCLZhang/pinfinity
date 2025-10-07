@@ -29,6 +29,7 @@ model User {
   displayUsername String?
 
   about String?
+  Post  Post[]
 
   @@unique([email])
   @@unique([username])
@@ -78,4 +79,17 @@ model Verification {
   updatedAt  DateTime @default(now()) @updatedAt
 
   @@map("verification")
+}
+
+model Post {
+  id          String   @id @map("_id")
+  image       String
+  title       String
+  description String
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+
+  @@map("post")
 }
