@@ -6,19 +6,14 @@ const UserAvatar = ({
   className,
   textSize = "text-xl",
 }: {
-  image: string;
+  image: string | null;
   username: string;
   className?: string;
   textSize?: string;
 }) => {
   return (
-    <Avatar className={className}>
-      {image && (
-        <AvatarImage
-          src={image !== "" ? image : undefined}
-          className="object-cover"
-        />
-      )}
+    <Avatar key={image ?? "fallback"} className={className}>
+      <AvatarImage src={image || undefined} className="object-cover" />
       <AvatarFallback className={`bg-primary text-white ${textSize}`}>
         {username.charAt(0)}
       </AvatarFallback>

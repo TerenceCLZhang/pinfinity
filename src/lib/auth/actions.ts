@@ -147,7 +147,7 @@ export const resetPassword = async (newPassword: string, token: string) => {
     return {
       success: true,
       message:
-        "Password reset! You will automatically be brought to the login page in 5 seconds.",
+        "Password reset. You will automatically be brought to the login page in 5 seconds.",
     };
   } catch (error) {
     return {

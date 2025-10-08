@@ -28,7 +28,7 @@ const formSchema = z
     path: ["passwordConfirm"],
   });
 
-export default function ResetPasswordForm() {
+export default function ResetPasswordFormUnauthenticated() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,7 +59,7 @@ export default function ResetPasswordForm() {
 
       if (res.success) {
         toast.success(res.message);
-        setTimeout(() => router.push("/login"), 0);
+        setTimeout(() => router.push("/login"), 5000);
       } else {
         toast.error(res.message);
       }

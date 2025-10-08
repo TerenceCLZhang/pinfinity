@@ -16,9 +16,10 @@ import {
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
-import UserAvatar from "./UserAvatar";
+import UserAvatar from "../UserAvatar";
 import axios from "axios";
 import { useUserStore } from "@/stores/userStore";
+import { deleteAvatar, setAvatar } from "@/lib/user/actions";
 
 const formSchema = z.object({
   avatar: z.any().optional(),
@@ -53,21 +54,38 @@ export default function AvatarUpdateForm() {
     setSubmitting(true);
 
     try {
-      const formData = new FormData();
-      if (values.avatar) formData.append("avatar", values.avatar);
+      const res = await setAvatar(values.avatar);
 
-      const res = await axios.post("/api/user/avatar", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      if (res.success) {
+        toast.success(res.message);
+        setUser({ image: res.url });
+        setSubmitDisabled(true);
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
-      toast.success(res.data.message);
-      setUser({ image: res.data.url });
-      setSubmitDisabled(true);
-    } catch (error: any) {
-      console.log(error);
-      toast.error(
-        error.response.data.message || "Something went wrong. Please try again."
-      );
+  async function handleRemoveAvatar() {
+    setSubmitting(true);
+
+    try {
+      const res = await deleteAvatar();
+
+      if (res.success) {
+        toast.success(res.message);
+        setUser({ image: null });
+        setSubmitDisabled(true);
+        setAvatarPreview(null);
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -117,6 +135,17 @@ export default function AvatarUpdateForm() {
                     </FormDescription>
                     <FormControl>
                       <div className="space-x-2">
+                        {user.image && (
+                          <Button
+                            type="button"
+                            onClick={handleRemoveAvatar}
+                            disabled={submitting}
+                            aria-disabled={submitting}
+                          >
+                            Remove
+                          </Button>
+                        )}
+
                         <Button
                           asChild
                           type="button"

@@ -20,7 +20,7 @@ export default async function RootLayout({
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-15">
+    <div className="flex flex-col items-center justify-center gap-15 p-8">
       <SessionSync user={session?.user}>
         <Header />
         {children}

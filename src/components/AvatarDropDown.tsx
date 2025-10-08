@@ -26,7 +26,7 @@ const AvatarDropDown = () => {
       <DropdownMenuTrigger className="hover:opacity-75 rounded-full">
         <UserAvatar
           username={user?.displayUsername ?? "User"}
-          image={user.image ?? ""}
+          image={user.image}
           className={"size-10"}
         />
       </DropdownMenuTrigger>
@@ -34,7 +34,7 @@ const AvatarDropDown = () => {
         <DropdownMenuLabel className="flex items-center gap-3 mr-10 py-4">
           <UserAvatar
             username={user?.displayUsername ?? "User"}
-            image={user.image ?? ""}
+            image={user.image}
             className={"size-10"}
           />
           <div className="flex flex-col">

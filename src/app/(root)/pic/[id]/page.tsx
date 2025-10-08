@@ -58,7 +58,7 @@ const Page = () => {
             aspernatur?
           </p>
 
-          <Separator className="h-0.5 bg-gray-100" />
+          <Separator className="separator" />
 
           <CommentsArea />
         </div>

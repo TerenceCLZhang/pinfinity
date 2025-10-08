@@ -13,7 +13,7 @@ const Header = async () => {
   });
 
   return (
-    <header className="container flex items-center justify-between mt-8 gap-15">
+    <header className="container flex items-center justify-between gap-15">
       <div className="flex items-center gap-10 h-full">
         <Link
           href="/"

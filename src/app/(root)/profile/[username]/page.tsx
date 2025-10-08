@@ -24,10 +24,10 @@ const Page = async ({ params }: { params: { username: string } }) => {
   }
 
   return (
-    <div className="container flex flex-col gap-10">
+    <main className="container flex flex-col gap-10">
       <div className="flex flex-col items-center justify-center gap-4">
         <UserAvatar
-          image={user.image as string}
+          image={user.image}
           username={user.displayUsername as string}
           className="size-40"
           textSize="text-8xl"
@@ -57,7 +57,7 @@ const Page = async ({ params }: { params: { username: string } }) => {
       </div>
 
       <ProfilePins />
-    </div>
+    </main>
   );
 };
 
