@@ -13,11 +13,9 @@ const r2 = new S3Client({
   },
 });
 
-export const putCommandAvatar = async (file: File, id: string) => {
+export const putCommand = async (file: File, key: string) => {
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
-
-  const key = `avatars/${id}-avatar`;
 
   const putObjectCommand = new PutObjectCommand({
     Bucket: "pinfinity",
@@ -37,9 +35,7 @@ export const putCommandAvatar = async (file: File, id: string) => {
   }
 };
 
-export const deleteCommandAvatar = async (id: string) => {
-  const key = `avatars/${id}-avatar`;
-
+export const deleteCommand = async (key: string) => {
   const deleteCommand = new DeleteObjectCommand({
     Bucket: "pinfinity",
     Key: key,

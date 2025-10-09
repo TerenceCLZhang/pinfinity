@@ -29,7 +29,7 @@ model User {
   displayUsername String?
 
   about String?
-  Post  Post[]
+  Pins  Pin[]
 
   @@unique([email])
   @@unique([username])
@@ -81,15 +81,15 @@ model Verification {
   @@map("verification")
 }
 
-model Post {
-  id          String   @id @map("_id")
+model Pin {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   image       String
   title       String
-  description String
+  description String?
   authorId    String
   author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
 
-  @@map("post")
+  @@map("pin")
 }

@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,8 +17,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useUserStore } from "@/stores/userStore";
+import { updateUser } from "@/lib/user/actions";
 
 const formSchema = z.object({
   firstName: z.string().min(1, { message: "Required" }).trim(),
@@ -28,6 +27,7 @@ const formSchema = z.object({
   username: z
     .string()
     .min(4, { message: "Username must be at least 4 characters long" })
+    .max(64, { message: "Username cannot be more than 64 characters long" })
     .refine((s) => !s.includes(" "), "Username cannot contain spaces")
     .trim(),
   email: z.email().trim(),
@@ -76,24 +76,16 @@ export default function EditProfileForm() {
     setSubmitting(true);
 
     try {
-      const formData = new FormData();
-      formData.append("firstName", values.firstName);
-      formData.append("lastName", values.lastName);
-      formData.append("username", values.username);
-      formData.append("email", values.email);
-      formData.append("about", values.about || "");
+      const res = await updateUser(values);
 
-      const res = await axios.post("/api/user/update", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      toast.success(res.data.message);
-      setUser(res.data.user);
+      if (res.success && res.user) {
+        toast.success(res.message);
+        setUser(res.user);
+      } else {
+        toast.error(res.message);
+      }
     } catch (error: any) {
-      console.log(error);
-      toast.error(
-        error.response.data.message || "Something went wrong. Please try again."
-      );
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -151,9 +143,6 @@ export default function EditProfileForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>About</FormLabel>
-              <FormDescription className="form-description-sm">
-                Maximum Length: 250 Characters
-              </FormDescription>
               <FormControl>
                 <div className="relative">
                   <Textarea

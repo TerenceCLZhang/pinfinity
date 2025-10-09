@@ -1,4 +1,4 @@
-import ProfilePins from "@/components/ProfilePins";
+import ProfilePins from "@/components/profile/ProfilePins";
 import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
 import { auth } from "@/lib/auth/auth";
@@ -14,7 +14,7 @@ const Page = async ({ params }: { params: { username: string } }) => {
 
   const { username } = await params;
 
-  // Get user info from database
+  // Fetch user directly from database
   const user = await db.user.findUnique({
     where: { username },
   });
@@ -22,6 +22,11 @@ const Page = async ({ params }: { params: { username: string } }) => {
   if (!user) {
     redirect("/");
   }
+
+  // Fetch number of pins
+  const numPins = await db.pin.count({
+    where: { authorId: user.id },
+  });
 
   return (
     <main className="container flex flex-col gap-10">
@@ -40,7 +45,9 @@ const Page = async ({ params }: { params: { username: string } }) => {
         <p className="whitespace-pre-wrap text-center">{user.about}</p>
 
         <div className="space-x-5">
-          <span>0 Pins</span>
+          <span>
+            {numPins} Pin{numPins !== 1 && "s"}
+          </span>
           <span>0 Followers</span>
           <span>0 Following</span>
         </div>

@@ -25,6 +25,7 @@ const signUpFormSchema = z.object({
   username: z
     .string()
     .min(4, { message: "Username must be at least 4 characters long" })
+    .max(64, { message: "Username cannot be more than 64 characters long" })
     .refine((s) => !s.includes(" "), "Username cannot contain spaces")
     .trim(),
   email: z.email().trim(),
@@ -116,6 +117,9 @@ export default function SignUpForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>
+              <FormDescription className="form-description-sm">
+                Minimum 4 characters and cannot contain spaces.
+              </FormDescription>
               <FormControl>
                 <Input
                   type="text"
@@ -157,6 +161,10 @@ export default function SignUpForm() {
           render={({ field }) => (
             <FormItem className="relative">
               <FormLabel>Password</FormLabel>
+              <FormDescription className="form-description-sm">
+                Password must contain <b>8 or more</b> letters, numbers, and
+                symbols
+              </FormDescription>
               <FormControl>
                 <PasswordInput
                   disabled={submitting}
@@ -166,11 +174,6 @@ export default function SignUpForm() {
               </FormControl>
 
               <FormMessage />
-
-              <FormDescription className="text-xs">
-                Password must contain <b>8 or more</b> letters, numbers, and
-                symbols
-              </FormDescription>
             </FormItem>
           )}
         />

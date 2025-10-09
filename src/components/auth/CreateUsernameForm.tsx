@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -65,6 +66,9 @@ export default function CreateUsernameForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>
+              <FormDescription className="form-description-sm">
+                Minimum 4 characters and cannot contain spaces.
+              </FormDescription>
               <FormControl>
                 <Input
                   type="text"

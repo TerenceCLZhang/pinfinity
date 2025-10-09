@@ -13,13 +13,6 @@ const Page = async () => {
 
   if (!session) redirect("/");
 
-  // Get user info from database
-  const user = await db.user.findUnique({
-    where: { id: session.user.id },
-  });
-
-  if (!user) redirect("/");
-
   return (
     <main className="container max-w-3xl flex flex-col gap-15">
       <div className="edit-profile-section">

@@ -17,7 +17,6 @@ import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import UserAvatar from "../UserAvatar";
-import axios from "axios";
 import { useUserStore } from "@/stores/userStore";
 import { deleteAvatar, setAvatar } from "@/lib/user/actions";
 
@@ -32,19 +31,19 @@ export default function AvatarUpdateForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      avatar: "",
+      avatar: null,
     },
   });
 
   const [submitting, setSubmitting] = useState(false);
-  const [avatarPreview, setAvatarPreview] = useState(user?.image);
+  const [preview, setPreview] = useState(user?.image);
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
   // Sync form with user when available
   useEffect(() => {
     if (user?.image) {
       form.reset({ avatar: user.image });
-      setAvatarPreview(user.image);
+      setPreview(user.image);
     }
   }, [user, form]);
 
@@ -80,7 +79,7 @@ export default function AvatarUpdateForm() {
         toast.success(res.message);
         setUser({ image: null });
         setSubmitDisabled(true);
-        setAvatarPreview(null);
+        setPreview(null);
       } else {
         toast.error(res.message);
       }
@@ -90,6 +89,13 @@ export default function AvatarUpdateForm() {
       setSubmitting(false);
     }
   }
+
+  // Clean up after component unmount
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [preview]);
 
   return (
     <Form {...form}>
@@ -107,6 +113,7 @@ export default function AvatarUpdateForm() {
 
               if (!file) return;
 
+              // Check if file is over 2 MB.
               const max_file_size = 2 * 1024 * 1024;
 
               if (file.size > max_file_size) {
@@ -114,7 +121,12 @@ export default function AvatarUpdateForm() {
                 return;
               }
 
-              setAvatarPreview(URL.createObjectURL(file));
+              // Cleanup previous object URL
+              if (preview) {
+                URL.revokeObjectURL(preview);
+              }
+
+              setPreview(URL.createObjectURL(file));
               setSubmitDisabled(false);
             };
 
@@ -122,7 +134,7 @@ export default function AvatarUpdateForm() {
               <FormItem className="flex items-center gap-7">
                 <>
                   <UserAvatar
-                    image={avatarPreview as string}
+                    image={preview as string}
                     username={user.displayUsername?.charAt(0) as string}
                     className="size-30"
                     textSize="text-6xl"
@@ -131,7 +143,7 @@ export default function AvatarUpdateForm() {
                   <div className="flex-1 flex flex-col gap-2">
                     <FormLabel className="sr-only">Avatar</FormLabel>
                     <FormDescription className="form-description-sm">
-                      Maximum File Size: 2 MB
+                      Upload your Avatar (JPG, PNG or SVG, Maximum Size: 2 MB).
                     </FormDescription>
                     <FormControl>
                       <div className="space-x-2">
