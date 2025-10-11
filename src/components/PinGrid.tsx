@@ -1,42 +1,56 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import axios from "axios";
+import { Pin } from "@/generated/prisma";
 
-const PhotoGrid = () => {
-  const images = Array.from(
-    { length: 13 },
-    (_, i) => `/test/sample${i + 1}.jpg`
-  );
+const PinGrid = () => {
+  const [pins, setPins] = useState<Pin[]>([]);
+
+  useEffect(() => {
+    const fetchPins = async () => {
+      try {
+        const res = await axios.get("/api/pins/get-all");
+        setPins(res.data);
+      } catch (error) {
+        console.error("Failed to fetch pins", error);
+      }
+    };
+
+    fetchPins();
+  }, []);
+
+  if (!pins) return <></>;
 
   return (
     <div className="container columns-5 gap-4 space-y-4 ">
-      {images.map((v, i) => (
-        <ImageCard key={i} src={v} alt={`Placeholder ${i}`} />
+      {pins.map((pin) => (
+        <PinCard key={pin.id} pin={pin} />
       ))}
     </div>
   );
 };
 
-const ImageCard = ({ src, alt }: { src: string; alt: string }) => {
+const PinCard = ({ pin }: { pin: Pin }) => {
   const [loaded, setLoaded] = useState(false);
   const [hovered, setHovered] = useState(false);
 
   return (
     <div
-      className={`w-full break-inside-avoid relative rounded-lg overflow-hidden`}
+      className={`container w-full break-inside-avoid relative rounded-lg overflow-hidden`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       {!loaded && <Skeleton className="w-full h-[300px] rounded-lg" />}
 
-      <Link href={"/pic/abc"}>
+      <Link href={`/pin/${pin.id}`}>
         <Image
-          src={src}
-          alt={alt}
+          src={pin.image}
+          alt={pin.title}
           width={500}
           height={500}
           onLoad={() => setLoaded(true)}
@@ -59,4 +73,4 @@ const ImageCard = ({ src, alt }: { src: string; alt: string }) => {
   );
 };
 
-export default PhotoGrid;
+export default PinGrid;

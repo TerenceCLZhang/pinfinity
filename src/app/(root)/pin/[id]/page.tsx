@@ -1,17 +1,36 @@
 import ImageButtons from "@/components/ImageButtons";
-import PhotoGrid from "@/components/PhotoGrid";
+import PinGrid from "@/components/PinGrid";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Pin } from "@/generated/prisma";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Separator } from "@radix-ui/react-separator";
 import { ArrowLeft, SendHorizonal } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
-const Page = () => {
+const Page = async ({ params }: { params: { id: string } }) => {
+  const { id } = await params;
+  let pin: Pin;
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/pins/${id}`,
+      { next: { revalidate: 300 } }
+    );
+
+    if (!res.ok) {
+      notFound();
+    }
+
+    pin = await res.json();
+  } catch (error) {
+    notFound();
+  }
+
   return (
-    <main className="space-y-20">
+    <main className="container space-y-20">
       <div className="container flex gap-10">
         <Button
           type="button"
@@ -26,19 +45,16 @@ const Page = () => {
         </Button>
 
         <div className="border border-secondary shadow-md p-10 rounded-lg w-[45%] flex flex-col gap-5 items-center justify-center self-center">
-          <Image
-            src={"/test/sample3.jpg"}
-            alt="sample"
-            width={500}
-            height={500}
-            unoptimized
+          <img
+            src={pin.image}
+            alt={pin.title}
             className="w-full h-auto max-h-150 object-contain"
           />
           <ImageButtons />
         </div>
 
         <div className="flex-1 border border-secondary shadow-md  p-10 rounded-lg flex flex-col gap-5 h-fit self-center max-h-full">
-          <h2 className="text-4xl font-bold">Lorem Ipsum</h2>
+          <h2 className="text-4xl font-bold">{pin.title}</h2>
           <Link href={"#"} className="flex items-center gap-3 hover:opacity-85">
             <Avatar className="size-12 border-2 border-primary">
               <AvatarImage
@@ -51,12 +67,7 @@ const Page = () => {
             </Avatar>
             <span className="font-semibold text-lg">PixelPioneer</span>
           </Link>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio ab
-            aperiam voluptas cum quam recusandae esse facilis architecto,
-            sapiente nobis id illo ea, rerum vitae deleniti ullam doloribus vero
-            aspernatur?
-          </p>
+          {pin.description && <p>{pin.description}</p>}
 
           <Separator className="separator" />
 
@@ -64,7 +75,7 @@ const Page = () => {
         </div>
       </div>
 
-      <PhotoGrid />
+      <PinGrid />
     </main>
   );
 };
@@ -99,7 +110,7 @@ const FullComment = () => {
     <div className="flex flex-row items-center gap-3">
       <Avatar className="size-12 border-2 border-primary">
         <AvatarImage
-          src={"/test/sample4.jpg"}
+          src={"/test/sample2.jpg"}
           className="w-full h-full object-cover object-center"
         />
         <AvatarFallback className="self-center mx-auto">LI</AvatarFallback>

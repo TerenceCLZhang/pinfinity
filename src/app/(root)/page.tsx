@@ -1,9 +1,9 @@
-import PhotoGrid from "@/components/PhotoGrid";
+import PinGrid from "@/components/PinGrid";
 
 export default function Home() {
   return (
     <main>
-      <PhotoGrid />
+      <PinGrid />
     </main>
   );
 }

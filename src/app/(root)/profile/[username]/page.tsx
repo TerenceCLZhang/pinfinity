@@ -1,32 +1,35 @@
 import ProfilePins from "@/components/profile/ProfilePins";
 import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
+import { User } from "@/generated/prisma";
 import { auth } from "@/lib/auth/auth";
 import { db } from "@/lib/prisma";
 import { headers } from "next/headers";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 const Page = async ({ params }: { params: { username: string } }) => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+  let user: User;
 
   const { username } = await params;
 
-  // Fetch user directly from database
-  const user = await db.user.findUnique({
-    where: { username },
-  });
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/${username}`,
+      { next: { revalidate: 900 } }
+    );
 
-  if (!user) {
-    redirect("/");
+    if (!res.ok) {
+      notFound();
+    }
+
+    user = await res.json();
+  } catch (error) {
+    notFound();
   }
-
-  // Fetch number of pins
-  const numPins = await db.pin.count({
-    where: { authorId: user.id },
-  });
 
   return (
     <main className="container flex flex-col gap-10">
@@ -44,21 +47,9 @@ const Page = async ({ params }: { params: { username: string } }) => {
 
         <p className="whitespace-pre-wrap text-center">{user.about}</p>
 
-        <div className="space-x-5">
-          <span>
-            {numPins} Pin{numPins !== 1 && "s"}
-          </span>
-          <span>0 Followers</span>
-          <span>0 Following</span>
-        </div>
-
-        {session?.user.id === user.id ? (
+        {session?.user.id === user.id && (
           <Button type="button" asChild size={"lg"}>
             <Link href={"/profile/edit"}>Edit Profile</Link>
-          </Button>
-        ) : (
-          <Button type="button" size={"lg"}>
-            Follow
           </Button>
         )}
       </div>
