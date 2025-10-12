@@ -1,10 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Download, MessageSquareMore, ThumbsUp } from "lucide-react";
+import { Pin } from "@/generated/prisma";
+import { useUserStore } from "@/stores/userStore";
+import { Download, Edit, ThumbsUp } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
-const ImageButtons = () => {
+const ImageButtons = ({ pin }: { pin: Pin }) => {
+  const user = useUserStore((state) => state.user);
+
   const [numLikes, setNumLikes] = useState(0);
 
   return (
@@ -12,33 +17,27 @@ const ImageButtons = () => {
       <div>
         <Button
           type="button"
-          className="space-x-2 mr-2"
-          size={"icon"}
+          className="space-x-2 w-fit px-3"
           onClick={() => setNumLikes(numLikes + 1)}
         >
           <ThumbsUp />
+          <span>{numLikes}</span>
         </Button>
-        <span>{numLikes}</span>
       </div>
 
-      <Button
-        type="button"
-        size={"icon"}
-        onClick={() => {
-          const commentBar = document.getElementById("comment-bar");
-          commentBar?.focus();
-        }}
-      >
-        <MessageSquareMore />
-      </Button>
-
-      <a href="/test/sample1.jpg" download="sample1.jpg">
-        <Button type="button" size={"icon"}>
+      <a href={pin.image} target="_blank" download>
+        <Button type="button" className="space-x-2 w-fit px-3">
           <Download className="w-5 h-5" />
+          <span>Download</span>
         </Button>
       </a>
-
-      <Button type="button">Save</Button>
+      {user?.id === pin.authorId && (
+        <Button asChild>
+          <Link href={`/pin/edit/${pin.id}`}>
+            <Edit /> <span>Edit</span>
+          </Link>
+        </Button>
+      )}
     </div>
   );
 };

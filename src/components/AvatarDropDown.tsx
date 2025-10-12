@@ -30,7 +30,7 @@ const AvatarDropDown = () => {
           className={"size-10"}
         />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="z-100">
+      <DropdownMenuContent align="end" className="z-40">
         <DropdownMenuLabel className="flex items-center gap-3 mr-10 py-4">
           <UserAvatar
             username={user?.displayUsername ?? "User"}

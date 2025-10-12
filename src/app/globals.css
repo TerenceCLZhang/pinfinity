@@ -165,6 +165,10 @@
   button {
     @apply cursor-pointer;
   }
+
+  p {
+    @apply hyphens-auto;
+  }
 }
 
 @layer components {
@@ -194,5 +198,13 @@
 
   .separator {
     @apply h-0.5 bg-secondary;
+  }
+
+  .pin-img {
+    @apply max-h-150 w-auto object-contain;
+  }
+
+  .card-border-shadow {
+    @apply border border-secondary shadow-md p-10 rounded-lg;
   }
 }

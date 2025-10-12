@@ -3,10 +3,10 @@ import React from "react";
 
 const Page = () => {
   return (
-    <main className="container w-full space-y-15">
+    <section className="container w-full space-y-5">
       <h1 className="text-4xl text-center">Create a Pin</h1>
       <CreatePinForm />
-    </main>
+    </section>
   );
 };
 

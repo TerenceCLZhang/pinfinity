@@ -66,7 +66,7 @@ const PinCard = ({ pin }: { pin: Pin }) => {
 
       {hovered && (
         <Button type="button" size={"lg"} className="absolute right-2 top-2">
-          Save
+          Like
         </Button>
       )}
     </div>

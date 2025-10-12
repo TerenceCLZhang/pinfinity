@@ -14,7 +14,7 @@ const Page = async () => {
   if (!session) redirect("/");
 
   return (
-    <main className="container max-w-3xl flex flex-col gap-15">
+    <section className="container max-w-3xl flex flex-col gap-15 mx-auto">
       <div className="edit-profile-section">
         <h2 className="edit-profile-heading">Avatar</h2>
         <Separator className="separator" />
@@ -26,7 +26,7 @@ const Page = async () => {
         <Separator className="separator" />
         <EditProfileForm />
       </div>
-    </main>
+    </section>
   );
 };
 

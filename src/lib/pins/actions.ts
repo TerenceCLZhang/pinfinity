@@ -2,10 +2,11 @@
 
 import { headers } from "next/headers";
 import { auth } from "../auth/auth";
-import { putCommand } from "../cloudflare";
+import { deleteCommand, putCommand } from "../cloudflare";
 import { db } from "../prisma";
+import { revalidatePath } from "next/cache";
 
-export const CreatePin = async ({
+export const createPin = async ({
   image,
   title,
   description,
@@ -54,6 +55,90 @@ export const CreatePin = async ({
       success: true,
       message: "Pin created successfully.",
       pin,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Something went wrong. Please try again.",
+    };
+  }
+};
+
+export const deletePin = async ({ id, url }: { id: string; url: string }) => {
+  // Check if there is a session
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  if (!session) {
+    return { success: false, message: "Unauthorized" };
+  }
+
+  // Check if image and title are present
+  if (!id || !url) {
+    return { success: false, message: "ID or filename not provided." };
+  }
+
+  try {
+    // Delete image from cloudflare
+    let res;
+    const filename = url.split("/").pop();
+
+    res = await deleteCommand(`pins/${filename}`);
+
+    if (!res.success) {
+      return {
+        success: false,
+        message: "Could not delete image from Cloudflare.",
+      };
+    }
+
+    // Delete pin from database
+    res = await db.pin.delete({ where: { id } });
+
+    return {
+      success: true,
+      message: "Pin successfuly deleted.",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Something went wrong. Please try again.",
+    };
+  }
+};
+
+export const editPin = async (
+  id: string,
+  {
+    title,
+    description,
+  }: {
+    title: string;
+    description?: string;
+  }
+) => {
+  // Check if there is a session
+  const session = await auth.api.getSession({ headers: await headers() });
+
+  if (!session) {
+    return { success: false, message: "Unauthorized" };
+  }
+
+  // Check if id and title are present
+  if (!id || !title) {
+    return { success: false, message: "Pin does not have ID and/or title." };
+  }
+
+  try {
+    const res = await db.pin.update({
+      where: { id },
+      data: { title, description },
+    });
+
+    revalidatePath(`/pin/${id}`);
+
+    return {
+      success: true,
+      message: "Pin updated successfully.",
     };
   } catch (error) {
     return {

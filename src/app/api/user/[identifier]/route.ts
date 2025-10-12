@@ -3,19 +3,25 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
   _req: NextRequest,
-  { params }: { params: { username: string } }
+  { params }: { params: { identifier: string } }
 ) => {
-  const { username } = await params;
+  const { identifier } = await params;
 
-  if (!username) {
+  if (!identifier) {
     return NextResponse.json(
-      { message: "No username provided" },
+      { message: "No identifier provided" },
       { status: 400 }
     );
   }
 
   try {
-    const user = await db.user.findUnique({ where: { username } });
+    let user;
+
+    if (/^[A-Za-z0-9]{32}$/.test(identifier)) {
+      user = await db.user.findUnique({ where: { id: identifier } });
+    } else {
+      user = await db.user.findUnique({ where: { username: identifier } });
+    }
 
     if (!user) {
       return NextResponse.json(

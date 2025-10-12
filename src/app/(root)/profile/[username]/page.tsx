@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
 import { User } from "@/generated/prisma";
 import { auth } from "@/lib/auth/auth";
-import { db } from "@/lib/prisma";
+
 import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -32,8 +32,8 @@ const Page = async ({ params }: { params: { username: string } }) => {
   }
 
   return (
-    <main className="container flex flex-col gap-10">
-      <div className="flex flex-col items-center justify-center gap-4">
+    <section className="container flex flex-col gap-10">
+      <div className="flex flex-col items-center gap-4">
         <UserAvatar
           image={user.image}
           username={user.displayUsername as string}
@@ -55,7 +55,7 @@ const Page = async ({ params }: { params: { username: string } }) => {
       </div>
 
       <ProfilePins />
-    </main>
+    </section>
   );
 };
 

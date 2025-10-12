@@ -24,11 +24,11 @@ const ProfilePins = () => {
           }`}
           onClick={() => setCurrent(1)}
         >
-          Saves
+          Liked
         </button>
       </div>
 
-      {current == 0 ? <MyPins /> : <MySaves />}
+      {current == 0 ? <MyPins /> : <MyLiked />}
     </div>
   );
 };
@@ -37,8 +37,8 @@ const MyPins = () => {
   return <div>MyPins</div>;
 };
 
-const MySaves = () => {
-  return <div>MySaves</div>;
+const MyLiked = () => {
+  return <div>MyLiked</div>;
 };
 
 export default ProfilePins;

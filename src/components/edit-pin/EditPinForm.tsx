@@ -14,14 +14,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import PinInput from "./PinInput";
-import { createPin } from "@/lib/pins/actions";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { editPin } from "@/lib/pins/actions";
 
 const formSchema = z.object({
-  image: z.any(),
   title: z
     .string()
     .min(1, { message: "Required" })
@@ -34,13 +32,20 @@ const formSchema = z.object({
     .optional(),
 });
 
-export default function CreatePinForm() {
+export default function EditPinForm({
+  id,
+  title,
+  description,
+}: {
+  id: string;
+  title: string;
+  description?: string;
+}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      image: null,
-      title: "",
-      description: "",
+      title,
+      description,
     },
   });
 
@@ -51,11 +56,11 @@ export default function CreatePinForm() {
     setSubmitting(true);
 
     try {
-      const res = await createPin(values);
+      const res = await editPin(id, values);
 
       if (res.success) {
         toast.success(res.message);
-        router.push(`/pin/${res.pin?.id}`);
+        router.push(`/pin/${id}`);
       } else {
         toast.error(res.message);
       }
@@ -72,11 +77,7 @@ export default function CreatePinForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 mx-auto w-full flex gap-10 items-center"
       >
-        <div className="flex-1">
-          <PinInput form={form} submitting={submitting} />
-        </div>
-
-        <div className="flex-1 space-y-5">
+        <div className="space-y-5 w-full">
           <FormField
             control={form.control}
             name="title"
@@ -95,6 +96,7 @@ export default function CreatePinForm() {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="description"
@@ -124,12 +126,8 @@ export default function CreatePinForm() {
             )}
           />
 
-          <Button
-            type="submit"
-            size={"lg"}
-            disabled={form.watch("image") === null || submitting}
-          >
-            {submitting ? "Submitting..." : "Submit"}
+          <Button type="submit" size={"lg"} disabled={submitting}>
+            {submitting ? "Updating..." : "Update"}
           </Button>
         </div>
       </form>

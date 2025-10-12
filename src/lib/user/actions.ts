@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth/auth";
 import { db } from "@/lib/prisma";
 import { headers } from "next/headers";
 import { putCommand, deleteCommand } from "../cloudflare";
+import { revalidatePath } from "next/cache";
 
 export const setUsername = async (username: string) => {
   // Check if there is a session
@@ -36,6 +37,7 @@ export const setUsername = async (username: string) => {
         displayUsername: username,
       },
     });
+
     return { success: true, message: "Username successfully created." };
   } catch (error) {
     console.error(error);
@@ -76,6 +78,8 @@ export const setAvatar = async (avatar: File) => {
       data: { image: res.url },
     });
 
+    revalidatePath(`/profile/${session.user.username}`);
+
     return {
       success: true,
       message: "Avatar updated successfully.",
@@ -113,6 +117,8 @@ export const deleteAvatar = async () => {
       where: { id: session.user.id },
       data: { image: null },
     });
+
+    revalidatePath(`/profile/${session.user.username}`);
 
     return {
       success: true,
@@ -180,6 +186,8 @@ export const updateUser = async ({
         about,
       },
     });
+
+    revalidatePath(`/profile/${session.user.username}`);
 
     return {
       success: true,
