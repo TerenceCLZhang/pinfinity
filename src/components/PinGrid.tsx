@@ -6,30 +6,73 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { Pin } from "@/generated/prisma";
+import { Spinner } from "./ui/spinner";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
 const PinGrid = () => {
   const [pins, setPins] = useState<Pin[]>([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
+  // Fetch pins on page change
   useEffect(() => {
     const fetchPins = async () => {
+      setLoading(true);
+
       try {
-        const res = await axios.get("/api/pins/get-all");
-        setPins(res.data);
+        const res = await axios.get(`/api/pins/get-all/?page=${page}`);
+        setPins((prev) => [...prev, ...res.data.pins]);
+
+        // Stop loading if we reached the last page
+        if (page >= res.data.totalPages) {
+          setHasMore(false);
+        }
       } catch (error) {
         console.error("Failed to fetch pins", error);
+      } finally {
+        setLoading(false);
       }
     };
 
+    if (!hasMore) return;
+
     fetchPins();
+  }, [page]);
+
+  // Infinity scroll listener
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop + 1 >=
+          document.documentElement.scrollHeight &&
+        hasMore &&
+        !loading
+      ) {
+        setPage((prev) => prev + 1);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   if (!pins) return <p>No Pins to Show</p>;
 
   return (
-    <div className="container columns-5 gap-4 space-y-4">
-      {pins.map((pin) => (
-        <PinCard key={pin.id} pin={pin} />
-      ))}
+    <div className="container flex flex-col gap-15 items-center ">
+      <Masonry columnsCount={5} gutter="15px">
+        {pins.map((pin) => (
+          <PinCard key={pin.id} pin={pin} />
+        ))}
+      </Masonry>
+
+      {loading && hasMore && (
+        <div className="py-10 flex justify-center">
+          <Spinner className="size-10 text-primary" />
+        </div>
+      )}
     </div>
   );
 };

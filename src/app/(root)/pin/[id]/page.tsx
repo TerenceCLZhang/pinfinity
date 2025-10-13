@@ -62,6 +62,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
         <div className="flex-1 card-border-shadow flex flex-col gap-5 h-fit self-center max-h-full">
           <h2 className="text-4xl font-bold">{pin.title}</h2>
+
           <Link
             href={author ? `/profile/${author?.username}` : "/"}
             className="flex items-center gap-3 hover:opacity-85"
@@ -74,7 +75,15 @@ const Page = async ({ params }: { params: { id: string } }) => {
               {author?.displayUsername ?? "PinfinityUser"}
             </span>
           </Link>
-          {pin.description && <p>{pin.description}</p>}
+
+          {pin.description && (
+            <p className="whitespace-pre-line">{pin.description}</p>
+          )}
+
+          <span>
+            <b>Created:</b>{" "}
+            {new Date(pin.createdAt).toLocaleDateString("en-GB")}
+          </span>
         </div>
       </div>
 

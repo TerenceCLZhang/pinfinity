@@ -14,7 +14,7 @@ const Header = async () => {
 
   return (
     <header className="fixed w-full bg-white top-0 py-8 z-40">
-      <div className="container w-full flex items-center justify-between gap-15 mx-auto">
+      <div className="container px-8 flex items-center justify-between gap-15 mx-auto">
         <div className="flex items-center gap-10 h-full">
           <Link
             href="/"
