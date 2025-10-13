@@ -63,6 +63,7 @@ export default function EditPinForm({
       if (res.success) {
         toast.success(res.message);
         router.push(`/pin/${id}`);
+        return;
       } else {
         toast.error(res.message);
       }

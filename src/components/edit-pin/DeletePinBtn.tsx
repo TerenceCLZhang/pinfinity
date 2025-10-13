@@ -32,6 +32,7 @@ const DeletePinBtn = ({ id, url }: { id: string; url: string }) => {
       if (res.success) {
         toast.success(res.message);
         router.push("/");
+        return;
       } else {
         toast.error(res.message);
       }

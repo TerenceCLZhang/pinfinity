@@ -58,6 +58,7 @@ export default function CreatePinForm() {
       if (res.success) {
         toast.success(res.message);
         router.push(`/pin/${res.pin?.id}`);
+        return;
       } else {
         toast.error(res.message);
       }

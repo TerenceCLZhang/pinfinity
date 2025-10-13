@@ -47,6 +47,7 @@ export default function CreateUsernameForm() {
 
       if (res.success) {
         router.push("/");
+        return;
       } else {
         toast.error(res.message);
       }

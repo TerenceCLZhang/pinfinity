@@ -46,6 +46,7 @@ export default function LogInForm() {
 
       if (res.success) {
         router.push("/");
+        return;
       } else {
         toast.error(res.message || "Log in failed.");
       }
