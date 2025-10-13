@@ -1,8 +1,11 @@
 "use client";
 
+import axios from "axios";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import PinGrid from "../PinGrid";
 
-const ProfilePins = () => {
+const ProfilePins = ({ id }: { id: string }) => {
   const [current, setCurrent] = useState(0);
 
   return (
@@ -28,16 +31,22 @@ const ProfilePins = () => {
         </button>
       </div>
 
-      {current == 0 ? <MyPins /> : <MyLiked />}
+      {current == 0 ? <MyPins id={id} /> : <MyLiked id={id} />}
     </div>
   );
 };
 
-const MyPins = () => {
-  return <div>MyPins</div>;
+const MyPins = ({ id }: { id: string }) => {
+  // try {
+  //   const res = await axios.get(`/api/pins/get-all-user/${id}`);
+  // } catch (error) {
+  //   toast.error("Something went wrong fetching user's pins.");
+  // }
+
+  return <PinGrid />;
 };
 
-const MyLiked = () => {
+const MyLiked = ({ id }: { id: string }) => {
   return <div>MyLiked</div>;
 };
 

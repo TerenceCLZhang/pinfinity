@@ -116,12 +116,13 @@ const PinInput = ({
           </FormDescription>
           <FormControl>
             {preview ? (
-              <div className="p-5 bg-secondary rounded-lg flex justify-center items-center flex-col gap-5">
+              <div className="card-border-shadow flex flex-col items-center gap-5">
                 <Image
                   src={preview}
                   alt="Uploaded image"
                   width={500}
                   height={500}
+                  className="pin-img"
                 />
 
                 <div className="space-x-5">

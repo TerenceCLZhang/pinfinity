@@ -1,4 +1,4 @@
-import ImageButtons from "@/components/ImageButtons";
+import ImageButtons from "@/components/pin/ImageButtons";
 import PinGrid from "@/components/PinGrid";
 import UserAvatar from "@/components/UserAvatar";
 import { Pin, User } from "@/generated/prisma";
@@ -12,7 +12,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   let pin: Pin;
   let author: User | null = null;
 
-  // Get pin
+  // Fetch pin from database
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/pins/${id}`,
@@ -28,7 +28,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
     notFound();
   }
 
-  // Get pin author
+  // fetch pin author from database
   if (pin && pin.authorId) {
     try {
       const res = await fetch(

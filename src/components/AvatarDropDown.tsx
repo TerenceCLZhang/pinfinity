@@ -23,7 +23,10 @@ const AvatarDropDown = () => {
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger className="hover:opacity-75 rounded-full">
+      <DropdownMenuTrigger
+        className="hover:opacity-75 rounded-full"
+        aria-label="View Account Option"
+      >
         <UserAvatar
           username={user?.displayUsername ?? "User"}
           image={user.image}

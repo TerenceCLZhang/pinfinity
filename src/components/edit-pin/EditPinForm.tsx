@@ -23,12 +23,14 @@ const formSchema = z.object({
   title: z
     .string()
     .min(1, { message: "Required" })
-    .max(64, { message: "Title cannot be more than 128 characters long" }),
+    .max(64, { message: "Title cannot be more than 128 characters long" })
+    .trim(),
   description: z
     .string()
     .max(800, {
       message: "Description cannot be more than 800 characters long",
     })
+    .trim()
     .optional(),
 });
 
@@ -102,23 +104,24 @@ export default function EditPinForm({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Description</FormLabel>
+                <div className="flex justify-between">
+                  <FormLabel>Description</FormLabel>
+                  <span className="absolute right-3 bottom-1 text-xs">
+                    {form.watch("description")?.length} / 800
+                  </span>
+                </div>
+
                 <FormControl>
-                  <div className="relative">
-                    <Textarea
-                      className="resize-none h-45 break-all"
-                      {...field}
-                      disabled={submitting}
-                      aria-disabled={submitting}
-                      data-gram="false"
-                      data-gramm_editor="false"
-                      data-enable-grammarly="false"
-                      maxLength={800}
-                    />
-                    <span className="absolute right-3 bottom-1 text-xs">
-                      {form.watch("description")?.length} / 800
-                    </span>
-                  </div>
+                  <Textarea
+                    className="resize-none h-45 break-words [word-break:break-word] overflow-y-auto"
+                    {...field}
+                    disabled={submitting}
+                    aria-disabled={submitting}
+                    data-gram="false"
+                    data-gramm_editor="false"
+                    data-enable-grammarly="false"
+                    maxLength={800}
+                  />
                 </FormControl>
 
                 <FormMessage />

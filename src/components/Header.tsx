@@ -18,16 +18,19 @@ const Header = async () => {
         <div className="flex items-center gap-10 h-full">
           <Link
             href="/"
-            className="flex items-center gap-2 hover:opacity-85 h-full"
+            className="flex items-center gap-2 hover:opacity-85 h-10"
           >
-            <Image
-              src="/logo.svg"
-              alt="logo"
-              width={35}
-              height={35}
-              className="align-middle"
-            />
-            <h1 className="text-3xl leading-none">Pinfinity</h1>
+            <div className="relative h-full aspect-square">
+              <Image
+                src="/logo.svg"
+                alt="logo"
+                fill
+                className="object-contain"
+              />
+            </div>
+            <h1 className="text-3xl leading-none h-full flex items-center">
+              Pinfinity
+            </h1>
           </Link>
         </div>
         <SearchBar />

@@ -13,7 +13,11 @@ const UserAvatar = ({
 }) => {
   return (
     <Avatar key={image ?? "fallback"} className={className}>
-      <AvatarImage src={image || undefined} className="object-cover" />
+      <AvatarImage
+        src={image || undefined}
+        alt={`${username}'s avatar`}
+        className="object-cover"
+      />
       <AvatarFallback className={`bg-primary text-white ${textSize}`}>
         {username.charAt(0)}
       </AvatarFallback>

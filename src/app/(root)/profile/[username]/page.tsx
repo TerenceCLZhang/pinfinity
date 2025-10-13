@@ -54,7 +54,7 @@ const Page = async ({ params }: { params: { username: string } }) => {
         )}
       </div>
 
-      <ProfilePins />
+      <ProfilePins id={user.id} />
     </section>
   );
 };

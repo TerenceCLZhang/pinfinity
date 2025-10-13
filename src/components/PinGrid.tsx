@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
@@ -24,10 +23,10 @@ const PinGrid = () => {
     fetchPins();
   }, []);
 
-  if (!pins) return <></>;
+  if (!pins) return <p>No Pins to Show</p>;
 
   return (
-    <div className="container columns-5 gap-4 space-y-4 ">
+    <div className="container columns-5 gap-4 space-y-4">
       {pins.map((pin) => (
         <PinCard key={pin.id} pin={pin} />
       ))}
@@ -45,8 +44,6 @@ const PinCard = ({ pin }: { pin: Pin }) => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {!loaded && <Skeleton className="w-full h-[300px] rounded-lg" />}
-
       <Link href={`/pin/${pin.id}`}>
         <Image
           src={pin.image}

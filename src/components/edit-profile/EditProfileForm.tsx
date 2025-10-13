@@ -23,7 +23,7 @@ import { updateUser } from "@/lib/user/actions";
 const formSchema = z.object({
   firstName: z.string().min(1, { message: "Required" }).trim(),
   lastName: z.string().min(1, { message: "Required" }).trim(),
-  about: z.string().optional(),
+  about: z.string().trim().optional(),
   username: z
     .string()
     .min(4, { message: "Username must be at least 4 characters long" })
@@ -142,23 +142,24 @@ export default function EditProfileForm() {
           name="about"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>About</FormLabel>
+              <div className="flex justify-between">
+                <FormLabel>About</FormLabel>
+                <span className="absolute right-3 bottom-1 text-xs">
+                  {form.watch("about")?.length} / 800
+                </span>
+              </div>
+
               <FormControl>
-                <div className="relative">
-                  <Textarea
-                    maxLength={250}
-                    disabled={submitting}
-                    aria-disabled={submitting}
-                    className="resize-none h-25 break-all"
-                    data-gram="false"
-                    data-gramm_editor="false"
-                    data-enable-grammarly="false"
-                    {...field}
-                  />
-                  <span className="absolute right-3 bottom-1 text-xs">
-                    {form.watch("about")?.length} / 250
-                  </span>
-                </div>
+                <Textarea
+                  maxLength={250}
+                  disabled={submitting}
+                  aria-disabled={submitting}
+                  className="resize-none h-25 break-words [word-break:break-word] overflow-y-auto"
+                  data-gram="false"
+                  data-gramm_editor="false"
+                  data-enable-grammarly="false"
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />
