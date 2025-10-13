@@ -32,13 +32,12 @@ const DeletePinBtn = ({ id, url }: { id: string; url: string }) => {
       if (res.success) {
         toast.success(res.message);
         router.push("/");
-        return;
       } else {
         toast.error(res.message);
+        setDeleting(false);
       }
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
-    } finally {
       setDeleting(false);
     }
   };

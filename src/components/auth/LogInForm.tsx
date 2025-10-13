@@ -46,13 +46,12 @@ export default function LogInForm() {
 
       if (res.success) {
         router.push("/");
-        return;
       } else {
         toast.error(res.message || "Log in failed.");
+        setSubmitting(false);
       }
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
-    } finally {
       setSubmitting(false);
     }
   }

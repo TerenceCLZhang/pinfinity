@@ -62,10 +62,10 @@ export default function ResetPasswordFormUnauthenticated() {
         setTimeout(() => router.push("/login"), 5000);
       } else {
         toast.error(res.message);
+        setSubmitting(false);
       }
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
-    } finally {
       setSubmitting(false);
     }
   }

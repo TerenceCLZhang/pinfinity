@@ -47,13 +47,12 @@ export default function CreateUsernameForm() {
 
       if (res.success) {
         router.push("/");
-        return;
       } else {
         toast.error(res.message);
+        setSubmitting(false);
       }
     } catch (error: any) {
       toast.error("Something went wrong. Please try again.");
-    } finally {
       setSubmitting(false);
     }
   }
