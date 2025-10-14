@@ -37,13 +37,7 @@ const ProfilePins = ({ id }: { id: string }) => {
 };
 
 const MyPins = ({ id }: { id: string }) => {
-  // try {
-  //   const res = await axios.get(`/api/pins/get-all-user/${id}`);
-  // } catch (error) {
-  //   toast.error("Something went wrong fetching user's pins.");
-  // }
-
-  return <PinGrid />;
+  return <PinGrid endpoint={`get-all-user/${id}`} />;
 };
 
 const MyLiked = ({ id }: { id: string }) => {

@@ -1,9 +1,5 @@
 import PinGrid from "@/components/PinGrid";
 
-export default function Home() {
-  return (
-    <div>
-      <PinGrid />
-    </div>
-  );
+export default async function Home() {
+  return <PinGrid />;
 }

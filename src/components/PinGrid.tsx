@@ -1,67 +1,81 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { Pin } from "@/generated/prisma";
 import { Spinner } from "./ui/spinner";
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import Masonry from "react-responsive-masonry";
 
-const PinGrid = () => {
+const PinGrid = ({
+  endpoint = "get-all",
+  search,
+}: {
+  endpoint?: string;
+  search?: string;
+}) => {
   const [pins, setPins] = useState<Pin[]>([]);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  // Fetch pins on page change
+  const loadingRef = useRef(false); // prevents duplicate fetches
+
+  // Reset when search changes
+  useEffect(() => {
+    setPins([]);
+    setPage(1);
+    setHasMore(true);
+  }, [search]);
+
   useEffect(() => {
     const fetchPins = async () => {
+      if (loadingRef.current || !hasMore) return;
+
+      loadingRef.current = true;
       setLoading(true);
 
       try {
-        const res = await axios.get(`/api/pins/get-all/?page=${page}`);
-        setPins((prev) => [...prev, ...res.data.pins]);
+        const res = await axios.get(`/api/pins/${endpoint}?page=${page}`);
+        const newPins = res.data.pins || [];
 
-        // Stop loading if we reached the last page
-        if (page >= res.data.totalPages) {
+        setPins((prev) => [...prev, ...newPins]);
+
+        if (page >= res.data.totalPages || newPins.length === 0) {
           setHasMore(false);
         }
       } catch (error) {
         console.error("Failed to fetch pins", error);
       } finally {
+        loadingRef.current = false;
         setLoading(false);
       }
     };
 
-    if (!hasMore) return;
-
     fetchPins();
-  }, [page]);
+  }, [page, endpoint, hasMore]);
 
-  // Infinity scroll listener
   useEffect(() => {
     const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop + 1 >=
-          document.documentElement.scrollHeight &&
-        hasMore &&
-        !loading
-      ) {
+      const bottom =
+        window.innerHeight + document.documentElement.scrollTop + 100 >=
+        document.documentElement.scrollHeight;
+
+      if (bottom && hasMore && !loadingRef.current) {
         setPage((prev) => prev + 1);
       }
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [hasMore]);
 
-  if (!pins) return <p>No Pins to Show</p>;
+  if (pins.length === 0 && !loading) return <p>No Pins to Show</p>;
 
   return (
-    <div className="container flex flex-col gap-15 items-center ">
+    <div className="container flex flex-col gap-15 items-center">
       <Masonry columnsCount={5} gutter="15px">
         {pins.map((pin) => (
           <PinCard key={pin.id} pin={pin} />
@@ -83,7 +97,7 @@ const PinCard = ({ pin }: { pin: Pin }) => {
 
   return (
     <div
-      className={`container w-full break-inside-avoid relative rounded-lg overflow-hidden`}
+      className="container w-full break-inside-avoid relative rounded-lg overflow-hidden"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -96,7 +110,7 @@ const PinCard = ({ pin }: { pin: Pin }) => {
           onLoad={() => setLoaded(true)}
           className={`w-full h-auto transition-all duration-500 ${
             loaded ? "opacity-100" : "opacity-0 absolute"
-          } group-hover:shadow-inner`}
+          }`}
         />
 
         {hovered && (
@@ -105,7 +119,7 @@ const PinCard = ({ pin }: { pin: Pin }) => {
       </Link>
 
       {hovered && (
-        <Button type="button" size={"lg"} className="absolute right-2 top-2">
+        <Button type="button" size="lg" className="absolute right-2 top-2">
           Like
         </Button>
       )}
