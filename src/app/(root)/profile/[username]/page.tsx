@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
 import { User } from "@/generated/prisma";
 import { auth } from "@/lib/auth/auth";
+import { db } from "@/lib/prisma";
 
 import { headers } from "next/headers";
 import Link from "next/link";
@@ -12,24 +13,12 @@ const Page = async ({ params }: { params: { username: string } }) => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  let user: User;
 
   const { username } = await params;
 
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/user/${username}`,
-      { next: { revalidate: 900 } }
-    );
+  const user = await db.user.findUnique({ where: { username } });
 
-    if (!res.ok) {
-      notFound();
-    }
-
-    user = await res.json();
-  } catch (error) {
-    notFound();
-  }
+  if (!user) notFound();
 
   return (
     <section className="container flex flex-col gap-10">

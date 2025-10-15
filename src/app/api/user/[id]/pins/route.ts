@@ -3,15 +3,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: { identifier: string } }
+  { params }: { params: { id: string } }
 ) => {
   const { searchParams } = new URL(req.url);
   const page = parseInt(searchParams.get("page") || "1", 10);
   const limit = 20;
 
-  const { identifier } = await params;
+  const { id } = await params;
 
-  if (!identifier) {
+  if (!id) {
     return NextResponse.json(
       { message: "No identifier provided" },
       { status: 400 }
@@ -19,23 +19,14 @@ export const GET = async (
   }
 
   try {
-    let pins;
+    const pins = await db.pin.findMany({
+      where: { authorId: id },
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: { createdAt: "desc" },
+    });
 
-    if (/^[A-Za-z0-9]{32}$/.test(identifier)) {
-      pins = await db.pin.findMany({
-        where: { authorId: identifier },
-        skip: (page - 1) * limit,
-        take: limit,
-        orderBy: { createdAt: "desc" },
-      });
-    } else {
-      return NextResponse.json(
-        { message: "Identifier must be the user ID" },
-        { status: 400 }
-      );
-    }
-
-    const totalPins = await db.pin.count();
+    const totalPins = await db.pin.count({ where: { authorId: id } });
     const totalPages = Math.ceil(totalPins / limit);
 
     return NextResponse.json({ pins, totalPages }, { status: 200 });

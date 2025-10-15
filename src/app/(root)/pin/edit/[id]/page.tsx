@@ -1,14 +1,13 @@
 import DeletePinBtn from "@/components/edit-pin/DeletePinBtn";
 import EditPinForm from "@/components/edit-pin/EditPinForm";
-import { Pin } from "@/generated/prisma";
 import { auth } from "@/lib/auth/auth";
+import { db } from "@/lib/prisma";
 import { headers } from "next/headers";
 import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
-  let pin: Pin;
 
   // Check if user is logged in
   const session = await auth.api.getSession({
@@ -18,20 +17,11 @@ const Page = async ({ params }: { params: { id: string } }) => {
   if (!session) redirect(`/pin/${id}`);
 
   // Get pin
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/pins/${id}`,
-      { next: { revalidate: 300 } }
-    );
+  const pin = await db.pin.findUnique({
+    where: { id },
+  });
 
-    if (!res.ok) {
-      notFound();
-    }
-
-    pin = await res.json();
-  } catch (error) {
-    notFound();
-  }
+  if (!pin) notFound();
 
   // Check if the logged in user is the author of the pin
   if (session.user.id !== pin.authorId) {
