@@ -17,27 +17,34 @@ Pinfinity is a full-stack image-sharing web application inspired by Pinterest, b
 - Better Auth
 - Zustand
 
-## Minimum Viable Product
+## Minimum Viable Product (MVP)
 
-- Authentication
-  - [x] User sign up / login / logout
-  - [x] Email verification
-  - [x] Basic user profile with avatar, username, and bio
-  - [x] Session persistence
-- Pins
-  - [x] Upload a new pin
-  - [x] View individual pin details
-  - [x] Display a grid of all pins
-  - [x] Edit or delete own pins
-  - [x] Download pin images
-- Engagement
-  - [x] Like / unlike a pin
-  - [x] View like count
-  - [ ] Filter pins by most liked
-- User Profiles
-  - [x] View a user’s profile and all pins they’ve posted
-  - [ ] Follow / unfollow users
-  - [ ] Show follower / following counts
+Authentication
+
+- [x] User sign up / login / logout
+- [x] Email verification
+- [x] Basic user profile with avatar, username, and bio
+- [x] Session persistence Pins
+- [x] Upload a new pin
+- [x] View individual pin details
+- [x] Display a grid of all pins
+- [x] Edit or delete own pins
+- [x] Download pin images
+
+Engagement
+
+- [x] Like / unlike a pin
+- [x] View like count
+- [ ] Filter pins by most liked
+
+User Profiles
+
+- [x] View a user’s profile and all pins they’ve posted
+- [ ] Follow / unfollow users
+- [ ] Show follower / following counts
+
+Other
+
 - [x] Search pins by title or description
 - [x] Mason grid layout
 - [x] Infinite scroll for grid
