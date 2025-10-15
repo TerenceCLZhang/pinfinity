@@ -8,7 +8,7 @@ export const GET = async (
   const { id } = await params;
 
   if (!id) {
-    return NextResponse.json({ error: "No ID provided" }, { status: 400 });
+    return NextResponse.json({ message: "No ID provided" }, { status: 400 });
   }
 
   try {

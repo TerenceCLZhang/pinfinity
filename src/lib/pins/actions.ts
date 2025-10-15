@@ -3,8 +3,8 @@
 import { headers } from "next/headers";
 import { auth } from "../auth/auth";
 import { deleteCommand, putCommand } from "../cloudflare";
-import { db } from "../prisma";
 import { revalidatePath } from "next/cache";
+import { db } from "../prisma";
 
 export const createPin = async ({
   image,
@@ -20,11 +20,6 @@ export const createPin = async ({
 
   if (!session) {
     return { success: false, message: "Unauthorized" };
-  }
-
-  // Check if image and title are present
-  if (!image || !title) {
-    return { success: false, message: "Pin does not have image and/or title." };
   }
 
   try {
@@ -72,11 +67,6 @@ export const deletePin = async ({ id, url }: { id: string; url: string }) => {
     return { success: false, message: "Unauthorized" };
   }
 
-  // Check if image and title are present
-  if (!id || !url) {
-    return { success: false, message: "ID or filename not provided." };
-  }
-
   try {
     // Delete image from cloudflare
     let res;
@@ -121,11 +111,6 @@ export const editPin = async (
 
   if (!session) {
     return { success: false, message: "Unauthorized" };
-  }
-
-  // Check if id and title are present
-  if (!id || !title) {
-    return { success: false, message: "Pin does not have ID and/or title." };
   }
 
   try {

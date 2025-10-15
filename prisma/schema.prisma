@@ -30,6 +30,7 @@ model User {
 
   about String?
   Pins  Pin[]
+  Likes Like[]
 
   @@unique([email])
   @@unique([username])
@@ -90,6 +91,22 @@ model Pin {
   author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
+  Likes       Like[]
 
+  @@index([authorId])
+  @@index([createdAt])
   @@map("pin")
+}
+
+model Like {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  pinId     String   @db.ObjectId
+  pin       Pin      @relation(fields: [pinId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([pinId, userId])
+  @@index([pinId])
+  @@index([userId])
 }

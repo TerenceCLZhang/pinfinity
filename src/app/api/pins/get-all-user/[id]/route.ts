@@ -12,7 +12,7 @@ export const GET = async (
   const { id } = await params;
 
   if (!id) {
-    return NextResponse.json({ error: "No ID provided" }, { status: 400 });
+    return NextResponse.json({ message: "No ID provided" }, { status: 400 });
   }
 
   try {
@@ -29,6 +29,6 @@ export const GET = async (
     return Response.json({ pins, totalPages }, { status: 200 });
   } catch (error) {
     console.error(error);
-    return Response.json({ error: "Server error" }, { status: 500 });
+    return Response.json({ message: "Server error" }, { status: 500 });
   }
 };

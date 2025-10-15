@@ -152,10 +152,6 @@ export const updateUser = async ({
     return { success: false, message: "Unauthorized" };
   }
 
-  if (!firstName || !lastName || !username || !email) {
-    return { success: false, message: "All required fields must have data." };
-  }
-
   try {
     // Check for duplicate username
     const existingUsername = await db.user.findUnique({

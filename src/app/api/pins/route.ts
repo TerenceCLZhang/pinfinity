@@ -19,6 +19,6 @@ export const GET = async (req: NextRequest) => {
     return Response.json({ pins, totalPages }, { status: 200 });
   } catch (error) {
     console.error(error);
-    return Response.json({ error: "Server error" }, { status: 500 });
+    return Response.json({ message: "Server error" }, { status: 500 });
   }
 };

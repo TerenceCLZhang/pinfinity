@@ -87,7 +87,12 @@ const Page = async ({ params }: { params: { id: string } }) => {
         </div>
       </div>
 
-      <PinGrid />
+      <div className="space-y-5">
+        <h2 className="text-2xl font-semibold">
+          Explore more pins by {author?.displayUsername}
+        </h2>
+        <PinGrid endpoint={`get-all-user/${author?.id}`} />
+      </div>
     </section>
   );
 };

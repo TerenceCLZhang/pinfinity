@@ -15,7 +15,7 @@ export const GET = async (
   // Check if a search query was provided
   if (!search) {
     return NextResponse.json(
-      { error: "No search query provided" },
+      { message: "No search query provided" },
       { status: 400 }
     );
   }
@@ -51,6 +51,6 @@ export const GET = async (
     return Response.json({ pins, totalPages }, { status: 200 });
   } catch (error) {
     console.error(error);
-    return Response.json({ error: "Server error" }, { status: 500 });
+    return Response.json({ message: "Server error" }, { status: 500 });
   }
 };
