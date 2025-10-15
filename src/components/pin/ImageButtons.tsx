@@ -21,7 +21,7 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
     // Get the number of likes for the current pin
     const fetchNumLikes = async () => {
       try {
-        const res = await axios.get(`/api/pins/likes/${pin.id}`);
+        const res = await axios.get(`/api/pins/${pin.id}/likes`);
         setNumLikes(res.data);
       } catch (error) {
         console.error("Failed to fetch likes:", error);
@@ -31,9 +31,7 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
     // Check if the user has liked the current pin
     const hasLikedPost = async () => {
       try {
-        const res = await axios.get(
-          `/api/pins/likes/has-liked?pinId=${pin.id}&userId=${user.id}`
-        );
+        const res = await axios.get(`/api/pins/${pin.id}/likes/${user.id}`);
         setHasLiked(res.data.liked);
       } catch (error) {
         console.log("Failed to fetch whether user liked pin:", error);

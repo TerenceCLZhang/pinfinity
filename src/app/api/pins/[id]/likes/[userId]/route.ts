@@ -1,12 +1,13 @@
 import { db } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (req: NextRequest) => {
-  const { searchParams } = new URL(req.url);
-  const pinId = searchParams.get("pinId");
-  const userId = searchParams.get("userId");
+export const GET = async (
+  _req: NextRequest,
+  { params }: { params: { id: string; userId: string } }
+) => {
+  const { id, userId } = await params;
 
-  if (!pinId || !userId) {
+  if (!id || !userId) {
     return NextResponse.json(
       { message: "Missing pin ID and/or user ID" },
       { status: 400 }
@@ -17,7 +18,7 @@ export const GET = async (req: NextRequest) => {
     const liked = await db.like.findUnique({
       where: {
         pinId_userId: {
-          pinId,
+          pinId: id,
           userId,
         },
       },

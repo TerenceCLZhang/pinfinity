@@ -37,11 +37,11 @@ const ProfilePins = ({ id }: { id: string }) => {
 };
 
 const MyPins = ({ id }: { id: string }) => {
-  return <PinGrid endpoint={`get-all-user/${id}`} />;
+  return <PinGrid endpoint={`user/${id}/pins`} />;
 };
 
 const MyLiked = ({ id }: { id: string }) => {
-  return <PinGrid endpoint={`likes/get-all-liked/${id}`} />;
+  return <PinGrid endpoint={`user/${id}/liked`} />;
 };
 
 export default ProfilePins;

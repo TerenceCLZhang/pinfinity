@@ -14,7 +14,7 @@ const Page = async ({ searchParams }: { searchParams: { q: string } }) => {
       <h2>
         Search Results for <i>{q}</i>
       </h2>
-      <PinGrid endpoint={`get-all-search/${q}`} search={q} />
+      <PinGrid endpoint={`pins/search/${q}`} search={q} />
     </div>
   );
 };

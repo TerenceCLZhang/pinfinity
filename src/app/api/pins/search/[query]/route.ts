@@ -3,17 +3,17 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: { search: string } }
+  { params }: { params: { query: string } }
 ) => {
   const { searchParams } = new URL(req.url);
   const page = parseInt(searchParams.get("page") || "1", 10);
   const limit = 20;
 
-  const { search } = await params;
-  const wordList = search.split(" ");
+  const { query } = await params;
+  const wordList = query.split(" ");
 
   // Check if a search query was provided
-  if (!search) {
+  if (!query) {
     return NextResponse.json(
       { message: "No search query provided" },
       { status: 400 }

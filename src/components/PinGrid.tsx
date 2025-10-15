@@ -10,7 +10,7 @@ import { Spinner } from "./ui/spinner";
 import Masonry from "react-responsive-masonry";
 
 const PinGrid = ({
-  endpoint = "",
+  endpoint = "pins",
   search,
 }: {
   endpoint?: string;
@@ -36,7 +36,7 @@ const PinGrid = ({
       loadingRef.current = true;
 
       try {
-        const res = await axios.get(`/api/pins/${endpoint}?page=${page}`);
+        const res = await axios.get(`/api/${endpoint}?page=${page}`);
         const newPins = res.data.pins || [];
 
         setPins((prev) => [...prev, ...newPins]);

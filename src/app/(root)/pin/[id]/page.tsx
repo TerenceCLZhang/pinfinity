@@ -91,7 +91,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         <h2 className="text-2xl font-semibold">
           Explore more pins by {author?.displayUsername}
         </h2>
-        <PinGrid endpoint={`get-all-user/${author?.id}`} />
+        <PinGrid endpoint={`user/${author?.id}/pins`} />
       </div>
     </section>
   );
