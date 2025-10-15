@@ -16,8 +16,6 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
   const [hasLiked, setHasLiked] = useState(false);
 
   useEffect(() => {
-    if (!pin?.id || !user?.id) return; // Don't run if data not ready
-
     // Get the number of likes for the current pin
     const fetchNumLikes = async () => {
       try {
@@ -28,8 +26,9 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
       }
     };
 
-    // Check if the user has liked the current pin
     const hasLikedPost = async () => {
+      if (!user) return;
+
       try {
         const res = await axios.get(`/api/pins/${pin.id}/likes/${user.id}`);
         setHasLiked(res.data.liked);
@@ -38,11 +37,17 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
       }
     };
 
+    // Check if the user has liked the current pin
     fetchNumLikes();
     hasLikedPost();
   }, [pin.id, user?.id]);
 
   const handleLike = async () => {
+    if (!user) {
+      toast.error("You must be logged in to perform this action.");
+      return;
+    }
+
     try {
       const res = await likePin({
         pinId: pin.id,
@@ -62,6 +67,11 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
   };
 
   const handleUnlike = async () => {
+    if (!user) {
+      toast.error("You must be logged in to perform this action.");
+      return;
+    }
+
     try {
       const res = await unlikePin({
         pinId: pin.id,

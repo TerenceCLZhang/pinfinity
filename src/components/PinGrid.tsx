@@ -8,6 +8,7 @@ import axios from "axios";
 import { Pin } from "@/generated/prisma";
 import { Spinner } from "./ui/spinner";
 import Masonry from "react-responsive-masonry";
+import { useUserStore } from "@/stores/userStore";
 
 const PinGrid = ({
   endpoint = "pins",
@@ -89,6 +90,8 @@ const PinGrid = ({
 };
 
 const PinCard = ({ pin }: { pin: Pin }) => {
+  const user = useUserStore((state) => state.user);
+
   const [loaded, setLoaded] = useState(false);
   const [hovered, setHovered] = useState(false);
 
@@ -115,7 +118,7 @@ const PinCard = ({ pin }: { pin: Pin }) => {
         )}
       </Link>
 
-      {hovered && (
+      {hovered && user && (
         <Button type="button" size="lg" className="absolute right-2 top-2">
           Like
         </Button>
