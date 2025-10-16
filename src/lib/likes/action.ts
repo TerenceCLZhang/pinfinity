@@ -11,13 +11,6 @@ export const likePin = async ({
   pinId: string;
   userId: string;
 }) => {
-  // Check if there is a session
-  const session = await auth.api.getSession({ headers: await headers() });
-
-  if (!session) {
-    return { success: false, message: "Unauthorized" };
-  }
-
   try {
     await db.like.create({
       data: {
@@ -42,13 +35,6 @@ export const unlikePin = async ({
   pinId: string;
   userId: string;
 }) => {
-  // Check if there is a session
-  const session = await auth.api.getSession({ headers: await headers() });
-
-  if (!session) {
-    return { success: false, message: "Unauthorized" };
-  }
-
   try {
     await db.like.delete({
       where: {

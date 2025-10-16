@@ -1,10 +1,9 @@
+import ProfileClient from "@/components/profile/ProfileClient";
 import ProfilePins from "@/components/profile/ProfilePins";
 import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
-import { User } from "@/generated/prisma";
 import { auth } from "@/lib/auth/auth";
 import { db } from "@/lib/prisma";
-
 import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -34,13 +33,11 @@ const Page = async ({ params }: { params: { username: string } }) => {
           <span className="text-sm italic">@{user.displayUsername}</span>
         </div>
 
-        <p className="whitespace-pre-wrap text-center">{user.about}</p>
-
-        {session?.user.id === user.id && (
-          <Button type="button" asChild size={"lg"}>
-            <Link href={"/profile/edit"}>Edit Profile</Link>
-          </Button>
-        )}
+        <ProfileClient
+          userId={user.id}
+          currentUserId={session?.user.id}
+          about={user.about}
+        />
       </div>
 
       <ProfilePins id={user.id} />

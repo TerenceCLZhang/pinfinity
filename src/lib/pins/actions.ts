@@ -60,13 +60,6 @@ export const createPin = async ({
 };
 
 export const deletePin = async ({ id, url }: { id: string; url: string }) => {
-  // Check if there is a session
-  const session = await auth.api.getSession({ headers: await headers() });
-
-  if (!session) {
-    return { success: false, message: "Unauthorized" };
-  }
-
   try {
     // Delete image from cloudflare
     let res;
@@ -106,13 +99,6 @@ export const editPin = async (
     description?: string;
   }
 ) => {
-  // Check if there is a session
-  const session = await auth.api.getSession({ headers: await headers() });
-
-  if (!session) {
-    return { success: false, message: "Unauthorized" };
-  }
-
   try {
     const res = await db.pin.update({
       where: { id },

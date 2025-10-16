@@ -31,7 +31,6 @@ export const GET = async (
 
     return NextResponse.json({ pins, totalPages }, { status: 200 });
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 };

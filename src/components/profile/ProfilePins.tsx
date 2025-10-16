@@ -1,9 +1,8 @@
 "use client";
 
-import axios from "axios";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import PinGrid from "../PinGrid";
+import { Button } from "../ui/button";
 
 const ProfilePins = ({ id }: { id: string }) => {
   const [current, setCurrent] = useState(0);

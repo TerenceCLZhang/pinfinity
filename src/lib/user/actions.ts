@@ -197,3 +197,51 @@ export const updateUser = async ({
     };
   }
 };
+
+export const followUser = async ({
+  followerId,
+  followeeId,
+}: {
+  followerId: string;
+  followeeId: string;
+}) => {
+  try {
+    await db.follow.create({
+      data: {
+        followeeId,
+        followerId,
+      },
+    });
+
+    return { success: true, message: "User followed successfully." };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Something went wrong. Please try again.",
+    };
+  }
+};
+
+export const unfollowUser = async ({
+  followerId,
+  followeeId,
+}: {
+  followerId: string;
+  followeeId: string;
+}) => {
+  try {
+    await db.follow.deleteMany({
+      where: {
+        followerId,
+        followeeId,
+      },
+    });
+
+    return { success: true, message: "User unfollowed successfully." };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Something went wrong. Please try again.",
+    };
+  }
+};

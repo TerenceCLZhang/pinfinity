@@ -45,7 +45,7 @@ const DeletePinBtn = ({ id, url }: { id: string; url: string }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button>
+        <Button className="button">
           <Trash />
           Delete
         </Button>

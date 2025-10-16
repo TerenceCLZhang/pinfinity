@@ -40,8 +40,8 @@ Engagement
 User Profiles
 
 - [x] View a user’s profile and all pins they’ve posted
-- [ ] Follow / unfollow users
-- [ ] Show follower / following counts
+- [x] Follow / unfollow users
+- [x] Show pin, follower, and following counts
 
 Other
 
