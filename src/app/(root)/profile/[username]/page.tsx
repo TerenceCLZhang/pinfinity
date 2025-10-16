@@ -6,6 +6,26 @@ import { db } from "@/lib/prisma";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 
+// Metadata
+export async function generateMetadata({
+  params,
+}: {
+  params: { username: string };
+}) {
+  const user = await db.user.findUnique({
+    where: { username: params.username },
+  });
+
+  if (!user) notFound();
+
+  return {
+    title: `Pinfinity | ${user.displayUsername}`,
+    description:
+      user.about || `Check out ${user.displayUsername}'s pins on Pinfinity`,
+  };
+}
+
+// Page Component
 const Page = async ({ params }: { params: { username: string } }) => {
   const session = await auth.api.getSession({
     headers: await headers(),

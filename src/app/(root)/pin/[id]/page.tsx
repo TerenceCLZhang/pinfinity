@@ -6,6 +6,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+// Metadata
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const pin = await db.pin.findUnique({
+    where: { id: params.id },
+  });
+
+  if (!pin) notFound();
+
+  return {
+    title: `Pinfinity | ${pin.title}`,
+    description: pin.description || "Check out this pin on our platform",
+  };
+}
+
+// Page component
 const Page = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
 

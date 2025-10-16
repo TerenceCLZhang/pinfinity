@@ -1,6 +1,21 @@
 import PinGrid from "@/components/PinGrid";
 import { redirect } from "next/navigation";
 
+// Metadata
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: { q: string };
+}) {
+  const { q } = await searchParams;
+
+  return {
+    title: `Pinfinity | ${q}`,
+    description: `Search results for "${q}" on Pinfinity`,
+  };
+}
+
+// Page Component
 const Page = async ({ searchParams }: { searchParams: { q: string } }) => {
   const { q } = await searchParams;
 
