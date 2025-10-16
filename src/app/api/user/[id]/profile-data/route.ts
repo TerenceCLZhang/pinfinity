@@ -1,6 +1,5 @@
 import { db } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { string } from "zod";
 
 export const GET = async (
   _req: NextRequest,
