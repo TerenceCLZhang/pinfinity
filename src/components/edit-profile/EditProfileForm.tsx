@@ -19,6 +19,7 @@ import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { useUserStore } from "@/stores/userStore";
 import { updateUser } from "@/lib/user/actions";
+import axios from "axios";
 
 const formSchema = z.object({
   firstName: z.string().min(1, { message: "Required" }).trim(),
@@ -37,17 +38,15 @@ export default function EditProfileForm() {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
 
-  let defaultValues = {
-    firstName: "",
-    lastName: "",
-    about: "",
-    username: "",
-    email: "",
-  };
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues,
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      about: "",
+      username: "",
+      email: "",
+    },
     mode: "onChange",
   });
 
@@ -59,17 +58,27 @@ export default function EditProfileForm() {
   useEffect(() => {
     if (!user) return;
 
-    const nameParts = user.name?.trim().split(/\s+/);
+    const setDefault = async () => {
+      const nameParts = user.name?.trim().split(/\s+/);
+      let about = "";
 
-    defaultValues = {
-      firstName: nameParts[0],
-      lastName: nameParts.slice(1).join(" "),
-      about: user.about || "",
-      username: user.displayUsername || "",
-      email: user.email || "",
+      try {
+        const res = await axios.get(`/api/user/${user?.id}/about`);
+        about = res.data;
+      } catch (error) {
+        toast.error("Failed to fetch About");
+      }
+
+      form.reset({
+        firstName: nameParts[0],
+        lastName: nameParts.slice(1).join(" "),
+        about,
+        username: user.displayUsername || "",
+        email: user.email || "",
+      });
     };
 
-    form.reset(defaultValues);
+    setDefault();
   }, [user, form]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -208,22 +217,9 @@ export default function EditProfileForm() {
           )}
         />
 
-        <div className="flex gap-2">
-          <Button
-            type="button"
-            size={"lg"}
-            disabled={submitting || !isDirty}
-            variant={"secondary"}
-            onClick={() => {
-              form.reset(defaultValues);
-            }}
-          >
-            Reset
-          </Button>
-          <Button type="submit" disabled={submitting || !isDirty} size={"lg"}>
-            {submitting ? "Saving..." : "Save"}
-          </Button>
-        </div>
+        <Button type="submit" disabled={submitting || !isDirty} size={"lg"}>
+          {submitting ? "Saving..." : "Save"}
+        </Button>
       </form>
     </Form>
   );

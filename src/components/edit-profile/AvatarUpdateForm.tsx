@@ -47,8 +47,6 @@ export default function AvatarUpdateForm() {
     }
   }, [user, form]);
 
-  if (!user) return;
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setSubmitting(true);
 
@@ -96,6 +94,8 @@ export default function AvatarUpdateForm() {
       if (preview) URL.revokeObjectURL(preview);
     };
   }, [preview]);
+
+  if (!user) return;
 
   return (
     <Form {...form}>

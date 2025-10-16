@@ -1,11 +1,9 @@
 import ProfileClient from "@/components/profile/ProfileClient";
 import ProfilePins from "@/components/profile/ProfilePins";
-import { Button } from "@/components/ui/button";
 import UserAvatar from "@/components/UserAvatar";
 import { auth } from "@/lib/auth/auth";
 import { db } from "@/lib/prisma";
 import { headers } from "next/headers";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 const Page = async ({ params }: { params: { username: string } }) => {

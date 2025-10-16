@@ -10,7 +10,6 @@ interface User {
   name: string;
   image: string | null;
   displayUsername: string | null;
-  about: string | null;
 }
 
 interface UserState {
