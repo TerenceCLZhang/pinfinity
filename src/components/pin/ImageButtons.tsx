@@ -26,7 +26,7 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
       }
     };
 
-    const hasLikedPost = async () => {
+    const hasLikedPin = async () => {
       if (!user) return;
 
       try {
@@ -39,7 +39,7 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
 
     // Check if the user has liked the current pin
     fetchNumLikes();
-    hasLikedPost();
+    hasLikedPin();
   }, [pin.id, user?.id]);
 
   const handleLike = async () => {
