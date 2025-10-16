@@ -12,8 +12,10 @@ export async function generateMetadata({
 }: {
   params: { username: string };
 }) {
+  const { username } = await params;
+
   const user = await db.user.findUnique({
-    where: { username: params.username },
+    where: { username },
   });
 
   if (!user) notFound();

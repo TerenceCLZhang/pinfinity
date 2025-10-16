@@ -8,8 +8,10 @@ import { notFound } from "next/navigation";
 
 // Metadata
 export async function generateMetadata({ params }: { params: { id: string } }) {
+  const { id } = await params;
+
   const pin = await db.pin.findUnique({
-    where: { id: params.id },
+    where: { id },
   });
 
   if (!pin) notFound();
