@@ -9,10 +9,10 @@ import { Spinner } from "./ui/spinner";
 import Masonry from "react-responsive-masonry";
 
 const PinGrid = ({
-  endpoint = "pins",
+  endpoint,
   search,
 }: {
-  endpoint?: string;
+  endpoint: string;
   search?: string;
 }) => {
   const [pins, setPins] = useState<Pin[]>([]);
@@ -26,7 +26,7 @@ const PinGrid = ({
     setPins([]);
     setPage(1);
     setHasMore(true);
-  }, [search]);
+  }, [search, endpoint]);
 
   useEffect(() => {
     const fetchPins = async () => {
@@ -35,7 +35,8 @@ const PinGrid = ({
       loadingRef.current = true;
 
       try {
-        const res = await axios.get(`/api/${endpoint}?page=${page}`);
+        const res = await axios.get(`${endpoint}?page=${page}`);
+
         const newPins = res.data.pins || [];
 
         setPins((prev) => [...prev, ...newPins]);
@@ -68,21 +69,24 @@ const PinGrid = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, [hasMore]);
 
-  if (pins.length === 0 && !loadingRef.current) return <p>No Pins to Show</p>;
+  if (pins.length === 0 && !loadingRef.current) {
+    return <p>No Pins to Show</p>;
+  }
 
   return (
-    <div className="container flex flex-col gap-15 items-center">
-      <Masonry columnsCount={5} gutter="15px">
-        {pins.map((pin) => (
-          <PinCard key={pin.id} pin={pin} />
-        ))}
-      </Masonry>
-
-      {hasMore && (
-        <div className="py-10 flex justify-center">
-          <Spinner className="size-10 text-primary" />
-        </div>
-      )}
+    <div className="space-y-5 w-full">
+      <div className="container flex flex-col gap-15 items-center">
+        <Masonry columnsCount={5} gutter="15px">
+          {pins.map((pin) => (
+            <PinCard key={pin.id} pin={pin} />
+          ))}
+        </Masonry>
+        {hasMore && loadingRef.current && (
+          <div className="py-10 flex justify-center">
+            <Spinner className="size-10 text-primary" />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

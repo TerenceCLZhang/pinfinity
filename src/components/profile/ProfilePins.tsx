@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import PinGrid from "../PinGrid";
-import { Button } from "../ui/button";
 
 const ProfilePins = ({ id }: { id: string }) => {
   const [current, setCurrent] = useState(0);
+
+  const endpoint =
+    current === 0 ? `/api/user/${id}/pins` : `/api/user/${id}/liked`;
 
   return (
     <div className="flex flex-col items-center justify-center gap-15">
@@ -30,17 +32,9 @@ const ProfilePins = ({ id }: { id: string }) => {
         </button>
       </div>
 
-      {current == 0 ? <MyPins id={id} /> : <MyLiked id={id} />}
+      <PinGrid endpoint={endpoint} />
     </div>
   );
-};
-
-const MyPins = ({ id }: { id: string }) => {
-  return <PinGrid endpoint={`user/${id}/pins`} />;
-};
-
-const MyLiked = ({ id }: { id: string }) => {
-  return <PinGrid endpoint={`user/${id}/liked`} />;
 };
 
 export default ProfilePins;

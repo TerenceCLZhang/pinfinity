@@ -13,6 +13,7 @@ export const GET = async (req: NextRequest) => {
       orderBy: { createdAt: "desc" },
     });
 
+    // Get total count for pagination
     const totalPins = await db.pin.count();
     const totalPages = Math.ceil(totalPins / limit);
 

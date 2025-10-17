@@ -36,6 +36,7 @@ export const GET = async (
       orderBy: { createdAt: "desc" },
     });
 
+    // Get total count for pagination
     const totalPins = await db.pin.count({
       where: {
         AND: wordList.flatMap((word) => ({

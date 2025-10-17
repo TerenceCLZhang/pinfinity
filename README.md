@@ -51,7 +51,7 @@ Other
 
 ## Extra Features
 
-- [ ] Following grid of all pins posted by followed users
+- [x] Following grid of all pins posted by followed users
 - [ ] Add, edit and delete comments
 - [ ] Tag system
 - [ ] Dark Mode

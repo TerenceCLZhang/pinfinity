@@ -28,6 +28,7 @@ export const GET = async (
 
     const pins = likedPins.map((like) => like.pin);
 
+    // Get total count for pagination
     const totalPins = await db.like.count({ where: { userId: id } });
     const totalPages = Math.ceil(totalPins / limit);
 
