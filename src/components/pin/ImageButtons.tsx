@@ -12,20 +12,10 @@ import toast from "react-hot-toast";
 
 const ImageButtons = ({ pin }: { pin: Pin }) => {
   const user = useUserStore((state) => state.user);
-  const [numLikes, setNumLikes] = useState(0);
+  const [numLikes, setNumLikes] = useState(pin.likeCount);
   const [hasLiked, setHasLiked] = useState(false);
 
   useEffect(() => {
-    // Get the number of likes for the current pin
-    const fetchNumLikes = async () => {
-      try {
-        const res = await axios.get(`/api/pins/${pin.id}/likes`);
-        setNumLikes(res.data);
-      } catch (error) {
-        console.error("Failed to fetch likes:", error);
-      }
-    };
-
     const hasLikedPin = async () => {
       if (!user) return;
 
@@ -38,7 +28,6 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
     };
 
     // Check if the user has liked the current pin
-    fetchNumLikes();
     hasLikedPin();
   }, [pin.id, user?.id]);
 

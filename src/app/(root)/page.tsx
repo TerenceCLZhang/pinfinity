@@ -14,6 +14,7 @@ import { useState } from "react";
 export default function Home() {
   const user = useUserStore((state) => state.user);
   const [current, setCurrent] = useState(0);
+  const [sort, setSort] = useState("newest");
 
   const endpoint = current === 0 ? "/api/pins" : "/api/pins/following";
 

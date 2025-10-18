@@ -1,7 +1,5 @@
 "use server";
 
-import { headers } from "next/headers";
-import { auth } from "../auth/auth";
 import { db } from "../prisma";
 
 export const likePin = async ({
@@ -17,6 +15,11 @@ export const likePin = async ({
         pinId,
         userId,
       },
+    });
+
+    await db.pin.update({
+      where: { id: pinId },
+      data: { likeCount: { increment: 1 } },
     });
 
     return { success: true, message: "Successfully liked pin." };
@@ -43,6 +46,11 @@ export const unlikePin = async ({
           userId,
         },
       },
+    });
+
+    await db.pin.update({
+      where: { id: pinId },
+      data: { likeCount: { decrement: 1 } },
     });
 
     return { success: true, message: "Successfully unliked pin." };
