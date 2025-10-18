@@ -1,12 +1,11 @@
 import { Prisma } from "@/generated/prisma";
-import { auth } from "@/lib/auth/auth";
+import { getSession } from "@/lib/getSession";
 import { db } from "@/lib/prisma";
-import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: { query: string } }
+  { params }: { params: Promise<{ query: string }> }
 ) => {
   const { searchParams } = new URL(req.url);
   const page = parseInt(searchParams.get("page") || "1", 10);
@@ -15,7 +14,8 @@ export const GET = async (
   const { query } = await params;
   const wordList = query.split(" ");
 
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await getSession();
+
   if (!session) {
     return NextResponse.json({ message: "Unauthorised" }, { status: 401 });
   }

@@ -1,18 +1,15 @@
 import DeletePinBtn from "@/components/edit-pin/DeletePinBtn";
 import EditPinForm from "@/components/edit-pin/EditPinForm";
-import { auth } from "@/lib/auth/auth";
+import { getSession } from "@/lib/getSession";
 import { db } from "@/lib/prisma";
-import { headers } from "next/headers";
 import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 
-const Page = async ({ params }: { params: { id: string } }) => {
+const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
 
   // Check if user is logged in
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSession();
 
   if (!session) redirect(`/pin/${id}`);
 

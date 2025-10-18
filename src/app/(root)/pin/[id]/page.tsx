@@ -9,7 +9,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 // Metadata
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
 
   const pin = await db.pin.findUnique({
@@ -25,7 +29,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 }
 
 // Page component
-const Page = async ({ params }: { params: { id: string } }) => {
+const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
 
   // Fetch pin and author from database

@@ -1,7 +1,6 @@
 import { Prisma } from "@/generated/prisma";
-import { auth } from "@/lib/auth/auth";
+import { getSession } from "@/lib/getSession";
 import { db } from "@/lib/prisma";
-import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
@@ -10,7 +9,7 @@ export const GET = async (req: NextRequest) => {
   const limit = 20;
   const sort = searchParams.get("sort") || "latest";
 
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await getSession();
 
   if (!session) {
     return NextResponse.json({ message: "Unauthorised" }, { status: 401 });

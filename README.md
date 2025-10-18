@@ -48,6 +48,7 @@ Other
 - [x] Search pins by title or description
 - [x] Mason grid layout
 - [x] Infinite scroll for grid
+- [ ] Responsive design
 
 ## Extra Features
 

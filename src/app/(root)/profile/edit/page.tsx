@@ -1,15 +1,11 @@
 import EditProfileForm from "@/components/edit-profile/EditProfileForm";
-import { auth } from "@/lib/auth/auth";
-import { db } from "@/lib/prisma";
 import { Separator } from "@radix-ui/react-dropdown-menu";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import AvatarUpdateForm from "@/components/edit-profile/AvatarUpdateForm";
+import { getSession } from "@/lib/getSession";
 
 const Page = async () => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSession();
 
   if (!session) redirect("/");
 

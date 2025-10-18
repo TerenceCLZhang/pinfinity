@@ -1,14 +1,13 @@
 "use server";
 
-import { auth } from "@/lib/auth/auth";
 import { db } from "@/lib/prisma";
-import { headers } from "next/headers";
 import { putCommand, deleteCommand } from "../cloudflare";
 import { revalidatePath } from "next/cache";
+import { getSession } from "../getSession";
 
 export const setUsername = async (username: string) => {
   // Check if there is a session
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await getSession();
 
   if (!session) {
     return { success: false, message: "Unauthorized" };
@@ -50,7 +49,7 @@ export const setUsername = async (username: string) => {
 
 export const setAvatar = async (avatar: File) => {
   // Check if there is a session
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await getSession();
 
   if (!session) {
     return { success: false, message: "Unauthorized" };
@@ -95,7 +94,7 @@ export const setAvatar = async (avatar: File) => {
 
 export const deleteAvatar = async () => {
   // Check if there is a session
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await getSession();
 
   if (!session) {
     return { success: false, message: "Unauthorized" };
@@ -146,7 +145,7 @@ export const updateUser = async ({
   about?: string | undefined;
 }) => {
   // Check if there is a session
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await getSession();
 
   if (!session) {
     return { success: false, message: "Unauthorized" };

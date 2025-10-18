@@ -1,10 +1,9 @@
 "use server";
 
-import { headers } from "next/headers";
-import { auth } from "../auth/auth";
 import { deleteCommand, putCommand } from "../cloudflare";
 import { revalidatePath } from "next/cache";
 import { db } from "../prisma";
+import { getSession } from "../getSession";
 
 export const createPin = async ({
   image,
@@ -16,7 +15,7 @@ export const createPin = async ({
   description?: string;
 }) => {
   // Check if there is a session
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await getSession();
 
   if (!session) {
     return { success: false, message: "Unauthorized" };

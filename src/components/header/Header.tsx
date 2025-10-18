@@ -2,15 +2,12 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
-import { auth } from "@/lib/auth/auth";
-import { headers } from "next/headers";
 import AvatarDropDown from "./AvatarDropDown";
 import { PlusIcon } from "lucide-react";
+import { getSession } from "@/lib/getSession";
 
 const Header = async () => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSession();
 
   return (
     <header className="fixed w-full bg-white top-0 py-8 z-40">

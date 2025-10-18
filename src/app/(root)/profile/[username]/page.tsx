@@ -1,9 +1,8 @@
 import ProfileClient from "@/components/profile/ProfileClient";
 import ProfilePins from "@/components/profile/ProfilePins";
 import UserAvatar from "@/components/UserAvatar";
-import { auth } from "@/lib/auth/auth";
+import { getSession } from "@/lib/getSession";
 import { db } from "@/lib/prisma";
-import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 
 // Metadata
@@ -28,10 +27,8 @@ export async function generateMetadata({
 }
 
 // Page Component
-const Page = async ({ params }: { params: { username: string } }) => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+const Page = async ({ params }: { params: Promise<{ username: string }> }) => {
+  const session = await getSession();
 
   const { username } = await params;
 

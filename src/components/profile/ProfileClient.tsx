@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import FollowBtn from "@/components/profile/FollowBtn";
 import Link from "next/link";
 import axios from "axios";
+import ProfileStats from "./ProfileStats";
 
 interface Props {
   userId: string;
@@ -32,11 +33,11 @@ const ProfileClient = ({ userId, currentUserId, about }: Props) => {
 
   return (
     <>
-      <div className="space-x-5">
-        <span>{numPins} Pins</span>
-        <span>{numFollowers} Followers</span>
-        <span>{numFollowing} Following</span>
-      </div>
+      <ProfileStats
+        numPins={numPins}
+        numFollowers={numFollowers}
+        numFollowing={numFollowing}
+      />
 
       <p className="whitespace-pre-wrap text-center">{about}</p>
 
