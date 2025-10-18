@@ -52,7 +52,8 @@ Other
 ## Extra Features
 
 - [x] Following grid of all pins posted by followed users
-- [ ] Remember me button
+- [x] Remember me button
+- [ ] Able to search for users
 - [ ] Show followers and following lists on profile
 - [ ] Show users who liked pin
 - [ ] Add, edit and delete comments

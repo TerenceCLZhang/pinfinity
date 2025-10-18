@@ -67,14 +67,19 @@ export const signUp = async (data: {
   }
 };
 
-export const logIn = async (data: { email: string; password: string }) => {
-  const { email, password } = data;
+export const logIn = async (data: {
+  email: string;
+  password: string;
+  remember: boolean;
+}) => {
+  const { email, password, remember } = data;
 
   try {
     await auth.api.signInEmail({
       body: {
         email,
         password,
+        rememberMe: remember,
       },
     });
 
