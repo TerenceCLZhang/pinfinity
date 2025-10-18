@@ -8,12 +8,12 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
   DropdownMenuLabel,
-} from "./ui/dropdown-menu";
+} from "../ui/dropdown-menu";
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu";
-import LogOut from "./auth/LogOut";
 import { useState } from "react";
-import UserAvatar from "./UserAvatar";
 import { useUserStore } from "@/stores/userStore";
+import UserAvatar from "../UserAvatar";
+import LogOut from "../auth/LogOut";
 
 const AvatarDropDown = () => {
   const [open, setOpen] = useState(false);

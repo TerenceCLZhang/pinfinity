@@ -1,6 +1,8 @@
 import ImageButtons from "@/components/pin/ImageButtons";
+import OtherPostsGrid from "@/components/pin/OtherPostsGrid";
 import PinGrid from "@/components/PinGrid";
 import UserAvatar from "@/components/UserAvatar";
+import { auth } from "@/lib/auth/auth";
 import { db } from "@/lib/prisma";
 import Image from "next/image";
 import Link from "next/link";
@@ -75,11 +77,12 @@ const Page = async ({ params }: { params: { id: string } }) => {
         </div>
       </div>
 
-      <div className="space-y-5">
+      <div>
         <h2 className="text-2xl font-semibold">
           Explore more pins by {author.displayUsername}
         </h2>
-        <PinGrid endpoint={`/api/user/${author.id}/pins`} />
+
+        <OtherPostsGrid pinId={pin.id} authorId={author.id} />
       </div>
     </section>
   );

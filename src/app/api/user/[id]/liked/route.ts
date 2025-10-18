@@ -1,3 +1,4 @@
+import { Prisma } from "@/generated/prisma";
 import { db } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -8,6 +9,7 @@ export const GET = async (
   const { searchParams } = new URL(req.url);
   const page = parseInt(searchParams.get("page") || "1", 10);
   const limit = 20;
+  const sort = searchParams.get("sort") || "latest";
 
   const { id } = await params;
 
@@ -16,24 +18,41 @@ export const GET = async (
   }
 
   try {
-    const likedPins = await db.like.findMany({
-      where: { userId: id },
-      include: { pin: true },
+    // Get the order
+    const orderBy: Prisma.Enumerable<Prisma.PinOrderByWithRelationInput> =
+      sort === "likes"
+        ? [{ likeCount: "desc" }, { id: "asc" }]
+        : [{ createdAt: "desc" }, { id: "asc" }]; // default to newest
+
+    // Fetch pins liked by the user
+    const pins = await db.pin.findMany({
+      where: {
+        Likes: {
+          some: {
+            userId: id,
+          },
+        },
+      },
       skip: (page - 1) * limit,
       take: limit,
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy,
     });
 
-    const pins = likedPins.map((like) => like.pin);
-
     // Get total count for pagination
-    const totalPins = await db.like.count({ where: { userId: id } });
+    const totalPins = await db.pin.count({
+      where: {
+        Likes: {
+          some: {
+            userId: id,
+          },
+        },
+      },
+    });
     const totalPages = Math.ceil(totalPins / limit);
 
     return NextResponse.json({ pins, totalPages });
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 };

@@ -2,37 +2,30 @@
 
 import { useState } from "react";
 import PinGrid from "../PinGrid";
+import TabAndSort from "../TabAndSort";
 
-const ProfilePins = ({ id }: { id: string }) => {
-  const [current, setCurrent] = useState(0);
+const ProfilePins = ({ id, username }: { id: string; username: string }) => {
+  const [activeTab, setActiveTab] = useState("own");
+  const [sort, setSort] = useState("latest");
 
   const endpoint =
-    current === 0 ? `/api/user/${id}/pins` : `/api/user/${id}/liked`;
+    activeTab === "own" ? `/api/user/${id}/pins` : `/api/user/${id}/liked`;
 
   return (
-    <div className="flex flex-col items-center justify-center gap-15">
-      <div className="space-x-5">
-        <button
-          type="button"
-          className={`font-semibold ${
-            current == 0 && "underline-btn-underline "
-          }`}
-          onClick={() => setCurrent(0)}
-        >
-          Pins
-        </button>
-        <button
-          type="button"
-          className={`font-semibold ${
-            current == 1 && "underline-btn-underline "
-          }`}
-          onClick={() => setCurrent(1)}
-        >
-          Liked
-        </button>
-      </div>
+    <div className="space-y-5">
+      <TabAndSort
+        tabs={[
+          { label: "Pins", value: "own" },
+          { label: "Liked", value: "liked" },
+        ]}
+        activeTab={activeTab}
+        sort={sort}
+        onChangeTab={setActiveTab}
+        onChangeSort={setSort}
+        currentPath={`/profile/${username}`}
+      />
 
-      <PinGrid endpoint={endpoint} />
+      <PinGrid endpoint={endpoint} sort={sort} />
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { Prisma } from "@/generated/prisma";
 import { db } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -8,6 +9,7 @@ export const GET = async (
   const { searchParams } = new URL(req.url);
   const page = parseInt(searchParams.get("page") || "1", 10);
   const limit = 20;
+  const sort = searchParams.get("sort") || "latest";
 
   const { id } = await params;
 
@@ -19,11 +21,17 @@ export const GET = async (
   }
 
   try {
+    // Get the order
+    const orderBy: Prisma.Enumerable<Prisma.PinOrderByWithRelationInput> =
+      sort === "likes"
+        ? [{ likeCount: "desc" }, { id: "asc" }]
+        : [{ createdAt: "desc" }, { id: "asc" }]; // default to newest
+
     const pins = await db.pin.findMany({
       where: { authorId: id },
       skip: (page - 1) * limit,
       take: limit,
-      orderBy: { createdAt: "desc" },
+      orderBy,
     });
 
     // Get total count for pagination

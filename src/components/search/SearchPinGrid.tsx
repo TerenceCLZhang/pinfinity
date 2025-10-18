@@ -1,19 +1,20 @@
 "use client";
 
-import PinGrid from "@/components/PinGrid";
-import TabAndSort from "@/components/TabAndSort";
-
 import { useState } from "react";
+import TabAndSort from "../TabAndSort";
+import PinGrid from "../PinGrid";
 
-export default function Home() {
+const SearchPinGrid = ({ q }: { q: string }) => {
   const [activeTab, setActiveTab] = useState("all");
   const [sort, setSort] = useState("latest");
 
   const endpoint =
-    activeTab === "following" ? "/api/pins/following" : "/api/pins";
+    activeTab === "following"
+      ? `/api/pins/search/${q}/following`
+      : `/api/pins/search/${q}`;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <TabAndSort
         tabs={[
           { label: "All", value: "all" },
@@ -23,10 +24,12 @@ export default function Home() {
         sort={sort}
         onChangeTab={setActiveTab}
         onChangeSort={setSort}
-        currentPath="/"
+        currentPath={`/search?q=${q}`}
       />
 
-      <PinGrid endpoint={endpoint} sort={sort} />
+      <PinGrid endpoint={endpoint} sort={sort} search={q} />
     </div>
   );
-}
+};
+
+export default SearchPinGrid;

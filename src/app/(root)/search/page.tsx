@@ -1,4 +1,4 @@
-import PinGrid from "@/components/PinGrid";
+import SearchPinGrid from "@/components/search/SearchPinGrid";
 import { redirect } from "next/navigation";
 
 // Metadata
@@ -25,11 +25,12 @@ const Page = async ({ searchParams }: { searchParams: { q: string } }) => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="space-y-4">
       <h2>
         Search Results for <i>{q}</i>
       </h2>
-      <PinGrid endpoint={`/api/pins/search/${q}`} search={q} />
+
+      <SearchPinGrid q={q} />
     </div>
   );
 };

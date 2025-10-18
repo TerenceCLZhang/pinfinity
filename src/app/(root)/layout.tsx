@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth/auth";
 import "../globals.css";
-import Header from "@/components/Header";
+import Header from "@/components/header/Header";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import SessionSync from "@/components/SessionSync";

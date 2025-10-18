@@ -11,31 +11,36 @@ import Masonry from "react-responsive-masonry";
 const PinGrid = ({
   endpoint,
   search,
+  sort = "latest",
 }: {
   endpoint: string;
   search?: string;
+  sort?: string;
 }) => {
   const [pins, setPins] = useState<Pin[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const loadingRef = useRef(false); // prevents duplicate fetches
 
   // Reset when search changes
   useEffect(() => {
+    setLoading(true);
     setPins([]);
     setPage(1);
     setHasMore(true);
-  }, [search, endpoint]);
+  }, [search, endpoint, sort]);
 
   useEffect(() => {
     const fetchPins = async () => {
       if (loadingRef.current || !hasMore) return;
 
+      setLoading(true);
       loadingRef.current = true;
 
       try {
-        const res = await axios.get(`${endpoint}?page=${page}`);
+        const res = await axios.get(`${endpoint}?page=${page}&sort=${sort}`);
 
         const newPins = res.data.pins || [];
 
@@ -48,12 +53,14 @@ const PinGrid = ({
         console.error("Failed to fetch pins", error);
       } finally {
         loadingRef.current = false;
+        setLoading(false);
       }
     };
 
     fetchPins();
-  }, [page, endpoint, hasMore]);
+  }, [page, endpoint, sort, hasMore]);
 
+  // Handle infinite scroll
   useEffect(() => {
     const handleScroll = () => {
       const bottom =
@@ -69,7 +76,17 @@ const PinGrid = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, [hasMore]);
 
-  if (pins.length === 0 && !loadingRef.current) {
+  // Spinner for initial load
+  if (loading && pins.length === 0) {
+    return (
+      <div className="flex justify-center py-10">
+        <Spinner className="size-10 text-primary" />
+      </div>
+    );
+  }
+
+  // Show no pins message when no pins are found after search
+  if (!loading && pins.length === 0) {
     return <p>No Pins to Show</p>;
   }
 
@@ -81,6 +98,8 @@ const PinGrid = ({
             <PinCard key={pin.id} pin={pin} />
           ))}
         </Masonry>
+
+        {/* Spinner when fetching next page */}
         {hasMore && loadingRef.current && (
           <div className="py-10 flex justify-center">
             <Spinner className="size-10 text-primary" />

@@ -35,7 +35,7 @@ Engagement
 
 - [x] Like / unlike a pin
 - [x] View like count
-- [ ] Filter pins by most liked
+- [x] Sort pins by most liked
 
 User Profiles
 
@@ -52,6 +52,9 @@ Other
 ## Extra Features
 
 - [x] Following grid of all pins posted by followed users
+- [ ] Remember me button
+- [ ] Show followers and following lists on profile
+- [ ] Show users who liked pin
 - [ ] Add, edit and delete comments
 - [ ] Tag system
 - [ ] Dark Mode
