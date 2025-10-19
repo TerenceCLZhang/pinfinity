@@ -3,10 +3,15 @@
 import { useState } from "react";
 import PinGrid from "../PinGrid";
 import TabAndSort from "../TabAndSort";
+import { useSearchParams } from "next/navigation";
 
 const ProfilePins = ({ id, username }: { id: string; username: string }) => {
-  const [activeTab, setActiveTab] = useState("own");
-  const [sort, setSort] = useState("latest");
+  const searchParams = useSearchParams();
+
+  const [activeTab, setActiveTab] = useState(
+    searchParams.get("activeTab") ?? "own"
+  );
+  const [sort, setSort] = useState(searchParams.get("sort") ?? "latest");
 
   const endpoint =
     activeTab === "own" ? `/api/user/${id}/pins` : `/api/user/${id}/liked`;

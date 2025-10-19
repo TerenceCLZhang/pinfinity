@@ -3,6 +3,7 @@
 import { useState } from "react";
 import PinGrid from "../PinGrid";
 import TabAndSort from "../TabAndSort";
+import { useSearchParams } from "next/navigation";
 
 const OtherPostsGrid = ({
   pinId,
@@ -11,7 +12,9 @@ const OtherPostsGrid = ({
   pinId: string;
   authorId: string;
 }) => {
-  const [sort, setSort] = useState("latest");
+  const searchParams = useSearchParams();
+
+  const [sort, setSort] = useState(searchParams.get("sort") ?? "latest");
 
   return (
     <div className="space-y-5">

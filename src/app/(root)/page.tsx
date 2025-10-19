@@ -2,12 +2,17 @@
 
 import PinGrid from "@/components/PinGrid";
 import TabAndSort from "@/components/TabAndSort";
+import { useSearchParams } from "next/navigation";
 
 import { useState } from "react";
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState("all");
-  const [sort, setSort] = useState("latest");
+  const searchParams = useSearchParams();
+
+  const [activeTab, setActiveTab] = useState(
+    searchParams.get("activeTab") ?? "all"
+  );
+  const [sort, setSort] = useState(searchParams.get("sort") ?? "latest");
 
   const endpoint =
     activeTab === "following" ? "/api/pins/following" : "/api/pins";

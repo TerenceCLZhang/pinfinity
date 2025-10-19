@@ -14,6 +14,7 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
   const user = useUserStore((state) => state.user);
   const [numLikes, setNumLikes] = useState(pin.likeCount);
   const [hasLiked, setHasLiked] = useState(false);
+  const [initialised, setInitialised] = useState(false);
 
   useEffect(() => {
     const hasLikedPin = async () => {
@@ -24,6 +25,9 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
         setHasLiked(res.data.liked);
       } catch (error) {
         console.log("Failed to fetch whether user liked pin:", error);
+        toast.error("Failed to fetch whether user liked pin.");
+      } finally {
+        setInitialised(true);
       }
     };
 
@@ -82,14 +86,16 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
   return (
     <div className="flex gap-5">
       <div>
-        <Button
-          type="button"
-          className="space-x-2 w-fit px-3"
-          onClick={hasLiked ? handleUnlike : handleLike}
-        >
-          <ThumbsUp fill={hasLiked ? "#fff" : "none"} />
-          {numLikes}
-        </Button>
+        {initialised && (
+          <Button
+            type="button"
+            className="space-x-2 w-fit px-3"
+            onClick={hasLiked ? handleUnlike : handleLike}
+          >
+            <ThumbsUp fill={hasLiked ? "#fff" : "none"} />
+            {numLikes}
+          </Button>
+        )}
       </div>
 
       <a href={pin.image} target="_blank" download>

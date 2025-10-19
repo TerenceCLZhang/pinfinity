@@ -1,41 +1,41 @@
 "use client";
 
-import {
-  Dialog,
-  DialogHeader,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-  DialogClose,
-} from "../ui/dialog";
+import FollowDialog from "./FollowDialog";
 
 const ProfileStats = ({
   numPins,
   numFollowers,
   numFollowing,
+  userId,
+  profileId,
+  initialised,
 }: {
   numPins: number;
   numFollowers: number;
   numFollowing: number;
+  userId?: string;
+  profileId: string;
+  initialised: boolean;
 }) => {
+  if (!initialised) return null;
+
   return (
     <div className="space-x-5">
       <span>{numPins} Pins</span>
 
-      <Dialog>
-        <DialogTrigger>
-          <span>{numFollowers} Followers</span>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Followers</DialogTitle>
-            <DialogClose />
-          </DialogHeader>
-          Followers
-        </DialogContent>
-      </Dialog>
+      <FollowDialog
+        num={numFollowers}
+        label="followers"
+        userId={userId}
+        profileId={profileId}
+      />
 
-      <span>{numFollowing} Following</span>
+      <FollowDialog
+        num={numFollowing}
+        label="following"
+        userId={userId}
+        profileId={profileId}
+      />
     </div>
   );
 };

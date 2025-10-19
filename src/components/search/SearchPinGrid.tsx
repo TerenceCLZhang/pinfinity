@@ -3,10 +3,15 @@
 import { useState } from "react";
 import TabAndSort from "../TabAndSort";
 import PinGrid from "../PinGrid";
+import { useSearchParams } from "next/navigation";
 
 const SearchPinGrid = ({ q }: { q: string }) => {
-  const [activeTab, setActiveTab] = useState("all");
-  const [sort, setSort] = useState("latest");
+  const searchParams = useSearchParams();
+
+  const [activeTab, setActiveTab] = useState(
+    searchParams.get("activeTab") ?? "all"
+  );
+  const [sort, setSort] = useState(searchParams.get("sort") ?? "latest");
 
   const endpoint =
     activeTab === "following"

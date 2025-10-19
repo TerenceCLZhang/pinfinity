@@ -51,8 +51,8 @@ const Page = async ({ params }: { params: Promise<{ username: string }> }) => {
         </div>
 
         <ProfileClient
-          userId={user.id}
-          currentUserId={session?.user.id}
+          userId={session?.user.id}
+          profileId={user.id}
           about={user.about}
         />
       </div>

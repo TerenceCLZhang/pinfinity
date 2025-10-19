@@ -5,8 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
 import { Pin } from "@/generated/prisma";
-import { Spinner } from "./ui/spinner";
 import Masonry from "react-responsive-masonry";
+import LoadingSpinner from "./LoadingSpinner";
 
 const PinGrid = ({
   endpoint,
@@ -78,11 +78,7 @@ const PinGrid = ({
 
   // Spinner for initial load
   if (loading && pins.length === 0) {
-    return (
-      <div className="flex justify-center py-10">
-        <Spinner className="size-10 text-primary" />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   // Show no pins message when no pins are found after search
@@ -100,11 +96,7 @@ const PinGrid = ({
         </Masonry>
 
         {/* Spinner when fetching next page */}
-        {hasMore && loadingRef.current && (
-          <div className="py-10 flex justify-center">
-            <Spinner className="size-10 text-primary" />
-          </div>
-        )}
+        {hasMore && loadingRef.current && <LoadingSpinner />}
       </div>
     </div>
   );

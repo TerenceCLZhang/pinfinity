@@ -55,8 +55,7 @@ Other
 - [x] Following grid of all pins posted by followed users
 - [x] Remember me button
 - [ ] Able to search for users
-- [ ] Show followers and following lists on profile
-- [ ] Show users who liked pin
+- [x] Show followers and following lists on profile
 - [ ] Add, edit and delete comments
 - [ ] Tag system
 - [ ] Dark Mode

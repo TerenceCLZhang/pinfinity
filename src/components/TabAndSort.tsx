@@ -54,10 +54,12 @@ const TabAndSort = ({
     if (hasTabs && activeTab && activeTab !== "all") {
       params.set("activeTab", activeTab);
     }
+    
     if (sort !== "latest") params.set("sort", sort);
 
     // Update URL without reloading
     const queryString = params.toString();
+
     const url = queryString
       ? `${currentPath}${currentPath.includes("?") ? "&" : "?"}${queryString}`
       : currentPath;
