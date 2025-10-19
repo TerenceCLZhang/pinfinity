@@ -3,7 +3,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -31,7 +30,6 @@ const formSchema = z.object({
     .max(64, { message: "Username cannot be more than 64 characters long" })
     .refine((s) => !s.includes(" "), "Username cannot contain spaces")
     .trim(),
-  email: z.email().trim(),
 });
 
 export default function EditProfileForm() {
@@ -45,7 +43,6 @@ export default function EditProfileForm() {
       lastName: "",
       about: "",
       username: "",
-      email: "",
     },
     mode: "onChange",
   });
@@ -74,7 +71,6 @@ export default function EditProfileForm() {
         lastName: nameParts.slice(1).join(" "),
         about,
         username: user.displayUsername || "",
-        email: user.email || "",
       });
     };
 
@@ -187,27 +183,6 @@ export default function EditProfileForm() {
                   type="text"
                   disabled={submitting}
                   aria-disabled={submitting}
-                  {...field}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input
-                  type="text"
-                  disabled={submitting}
-                  aria-disabled={submitting}
-                  inputMode="email"
                   {...field}
                 />
               </FormControl>

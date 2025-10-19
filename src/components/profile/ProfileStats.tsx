@@ -20,7 +20,7 @@ const ProfileStats = ({
   if (!initialised) return null;
 
   return (
-    <div className="space-x-5">
+    <div className="space-x-5 font-semibold">
       <span>{numPins} Pins</span>
 
       <FollowDialog

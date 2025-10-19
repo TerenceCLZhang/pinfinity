@@ -135,13 +135,11 @@ export const updateUser = async ({
   firstName,
   lastName,
   username,
-  email,
   about,
 }: {
   firstName: string;
   lastName: string;
   username: string;
-  email: string;
   about?: string | undefined;
 }) => {
   // Check if there is a session
@@ -161,15 +159,6 @@ export const updateUser = async ({
       return { success: false, message: "Username is already taken." };
     }
 
-    // Check for duplicate email
-    const existingEmail = await db.user.findUnique({
-      where: { email: email.toLowerCase() },
-    });
-
-    if (existingEmail && existingEmail.id !== session.user.id) {
-      return { success: false, message: "Email is already in use" };
-    }
-
     // Update user in database
     const updatedUser = await db.user.update({
       where: { id: session.user.id },
@@ -177,7 +166,6 @@ export const updateUser = async ({
         name: `${firstName} ${lastName}`,
         username: username.toLowerCase(),
         displayUsername: username,
-        email,
         about,
       },
     });
