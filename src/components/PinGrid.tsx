@@ -7,6 +7,7 @@ import axios from "axios";
 import { Pin } from "@/generated/prisma";
 import Masonry from "react-responsive-masonry";
 import LoadingSpinner from "./LoadingSpinner";
+import toast from "react-hot-toast";
 
 const PinGrid = ({
   endpoint,
@@ -49,8 +50,8 @@ const PinGrid = ({
         if (page >= res.data.totalPages || newPins.length === 0) {
           setHasMore(false);
         }
-      } catch (error) {
-        console.error("Failed to fetch pins", error);
+      } catch {
+        toast.error("Failed to fetch pins.");
       } finally {
         loadingRef.current = false;
         setLoading(false);

@@ -58,8 +58,7 @@ export const GET = async (
     const totalPages = Math.ceil(totalPins / limit);
 
     return Response.json({ pins, totalPages }, { status: 200 });
-  } catch (error) {
-    console.error(error);
+  } catch {
     return Response.json({ message: "Server error" }, { status: 500 });
   }
 };

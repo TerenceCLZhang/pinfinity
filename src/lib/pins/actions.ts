@@ -50,7 +50,7 @@ export const createPin = async ({
       message: "Pin created successfully.",
       pin,
     };
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: "Something went wrong. Please try again.",
@@ -80,7 +80,7 @@ export const deletePin = async ({ id, url }: { id: string; url: string }) => {
       success: true,
       message: "Pin successfuly deleted.",
     };
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: "Something went wrong. Please try again.",
@@ -99,7 +99,7 @@ export const editPin = async (
   }
 ) => {
   try {
-    const res = await db.pin.update({
+    await db.pin.update({
       where: { id },
       data: { title, description },
     });
@@ -110,7 +110,7 @@ export const editPin = async (
       success: true,
       message: "Pin updated successfully.",
     };
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: "Something went wrong. Please try again.",

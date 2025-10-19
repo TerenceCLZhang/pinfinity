@@ -23,7 +23,7 @@ export const likePin = async ({
     });
 
     return { success: true, message: "Successfully liked pin." };
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: "Something went wrong. Please try again.",
@@ -54,7 +54,7 @@ export const unlikePin = async ({
     });
 
     return { success: true, message: "Successfully unliked pin." };
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: "Something went wrong. Please try again.",

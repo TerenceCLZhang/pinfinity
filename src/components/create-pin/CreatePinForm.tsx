@@ -62,7 +62,7 @@ export default function CreatePinForm() {
         toast.error(res.message);
         setSubmitting(false);
       }
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
       setSubmitting(false);
     }

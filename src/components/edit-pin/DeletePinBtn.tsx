@@ -36,7 +36,7 @@ const DeletePinBtn = ({ id, url }: { id: string; url: string }) => {
         toast.error(res.message);
         setDeleting(false);
       }
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
       setDeleting(false);
     }

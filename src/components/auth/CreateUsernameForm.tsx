@@ -51,7 +51,7 @@ export default function CreateUsernameForm() {
         toast.error(res.message);
         setSubmitting(false);
       }
-    } catch (error: any) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
       setSubmitting(false);
     }

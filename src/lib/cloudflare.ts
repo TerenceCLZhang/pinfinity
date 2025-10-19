@@ -30,7 +30,7 @@ export const putCommand = async (file: File, key: string) => {
       success: true,
       url: `${process.env.IMG_URL}/${key}`,
     };
-  } catch (error) {
+  } catch {
     return { success: false };
   }
 };
@@ -44,7 +44,7 @@ export const deleteCommand = async (key: string) => {
   try {
     await r2.send(deleteCommand);
     return { success: true };
-  } catch (error) {
+  } catch {
     return { success: false };
   }
 };

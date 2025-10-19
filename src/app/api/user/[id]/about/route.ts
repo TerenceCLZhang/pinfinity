@@ -22,7 +22,7 @@ export const GET = async (
     }
 
     return NextResponse.json(user.about || "");
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 };

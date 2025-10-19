@@ -31,8 +31,7 @@ const ProfileClient = ({ userId, profileId, about }: Props) => {
         setNumPins(data.numPins);
         setNumFollowers(data.numFollowers);
         setNumFollowing(data.numFollowing);
-      } catch (error) {
-        console.error("Failed to fetch profile stats:", error);
+      } catch {
         toast.error("Failed to fetch profile stats.");
       } finally {
         setInitialised(true);

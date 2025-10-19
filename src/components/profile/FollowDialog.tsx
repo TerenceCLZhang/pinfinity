@@ -16,6 +16,7 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 import UserAvatar from "../UserAvatar";
 import Link from "next/link";
 import FollowBtn from "../FollowBtn";
+import toast from "react-hot-toast";
 
 const FollowDialog = ({
   num,
@@ -60,8 +61,8 @@ const FollowDialog = ({
         if (page >= res.data.totalPages || newUsers.length === 0) {
           setHasMore(false);
         }
-      } catch (error) {
-        console.error(`Failed to fetch ${label}`);
+      } catch {
+        toast.error(`Failed to fetch ${label}`);
       } finally {
         setLoading(false);
         loadingRef.current = false;

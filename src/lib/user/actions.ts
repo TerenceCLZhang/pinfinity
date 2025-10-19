@@ -38,8 +38,7 @@ export const setUsername = async (username: string) => {
     });
 
     return { success: true, message: "Username successfully created." };
-  } catch (error) {
-    console.error(error);
+  } catch {
     return {
       success: false,
       message: "Something went wrong. Please try again.",
@@ -84,7 +83,7 @@ export const setAvatar = async (avatar: File) => {
       message: "Avatar updated successfully.",
       url: res.url,
     };
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: "Something went wrong. Please try again.",
@@ -123,7 +122,7 @@ export const deleteAvatar = async () => {
       success: true,
       message: "Avatar successfully removed.",
     };
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: "Something went wrong. Please try again.",
@@ -177,7 +176,7 @@ export const updateUser = async ({
       message: "Successfully updated.",
       user: updatedUser,
     };
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: "Something went wrong. Please try again.",
@@ -201,7 +200,7 @@ export const followUser = async ({
     });
 
     return { success: true, message: "User followed successfully." };
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: "Something went wrong. Please try again.",
@@ -225,7 +224,7 @@ export const unfollowUser = async ({
     });
 
     return { success: true, message: "User unfollowed successfully." };
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: "Something went wrong. Please try again.",

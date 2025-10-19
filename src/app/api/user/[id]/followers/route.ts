@@ -32,7 +32,7 @@ export const GET = async (
     const totalPages = Math.ceil(totalFollowers / limit);
 
     return NextResponse.json({ followers, totalPages }, { status: 200 });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 };

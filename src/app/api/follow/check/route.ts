@@ -21,7 +21,7 @@ export const GET = async (req: NextRequest) => {
     });
 
     return NextResponse.json({ isFollowing: !!follow });
-  } catch (error) {
-    return NextResponse.json({ message: "Server errir" }, { status: 500 });
+  } catch {
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 };

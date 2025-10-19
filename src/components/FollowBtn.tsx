@@ -30,8 +30,7 @@ const FollowBtn = ({
           `/api/follow/check?followerId=${userId}&followeeId=${profileId}`
         );
         setFollowing(res.data.isFollowing);
-      } catch (error) {
-        console.error("Failed to check follow status:", error);
+      } catch {
         toast.error("Failed to check follow status.");
       } finally {
         setInitialised(true);
@@ -56,7 +55,7 @@ const FollowBtn = ({
       } else {
         toast.error(res.message);
       }
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
@@ -78,7 +77,7 @@ const FollowBtn = ({
       } else {
         toast.error(res.message);
       }
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);

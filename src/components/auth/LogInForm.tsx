@@ -54,7 +54,7 @@ export default function LogInForm() {
         toast.error(res.message || "Log in failed.");
         setSubmitting(false);
       }
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
       setSubmitting(false);
     }

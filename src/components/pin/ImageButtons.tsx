@@ -23,8 +23,7 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
       try {
         const res = await axios.get(`/api/pins/${pin.id}/likes/${user.id}`);
         setHasLiked(res.data.liked);
-      } catch (error) {
-        console.log("Failed to fetch whether user liked pin:", error);
+      } catch {
         toast.error("Failed to fetch whether user liked pin.");
       } finally {
         setInitialised(true);
@@ -54,7 +53,7 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
 
       setNumLikes((prev) => prev + 1);
       setHasLiked(true);
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
     }
   };
@@ -78,7 +77,7 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
 
       setNumLikes((prev) => prev - 1);
       setHasLiked(false);
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
     }
   };

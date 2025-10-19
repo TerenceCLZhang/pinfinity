@@ -35,7 +35,7 @@ export const GET = async (
       { following: followees, totalPages },
       { status: 200 }
     );
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 };

@@ -60,7 +60,7 @@ export default function AvatarUpdateForm() {
       } else {
         toast.error(res.message);
       }
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
@@ -81,7 +81,7 @@ export default function AvatarUpdateForm() {
       } else {
         toast.error(res.message);
       }
-    } catch (error) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);

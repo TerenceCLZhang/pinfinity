@@ -62,7 +62,7 @@ export default function EditProfileForm() {
       try {
         const res = await axios.get(`/api/user/${user?.id}/about`);
         about = res.data;
-      } catch (error) {
+      } catch {
         toast.error("Failed to fetch About");
       }
 
@@ -89,7 +89,7 @@ export default function EditProfileForm() {
       } else {
         toast.error(res.message);
       }
-    } catch (error: any) {
+    } catch {
       toast.error("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);

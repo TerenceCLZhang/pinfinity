@@ -28,8 +28,6 @@ export const signUp = async (data: {
       message: "A validation link has been sent to your email.",
     };
   } catch (error) {
-    console.error(error);
-
     if (error instanceof APIError) {
       switch (error.status) {
         case "UNPROCESSABLE_ENTITY":
@@ -85,8 +83,6 @@ export const logIn = async (data: {
 
     return { success: true };
   } catch (error) {
-    console.error(error);
-
     if (error instanceof APIError) {
       switch (error.status) {
         case "UNAUTHORIZED":
@@ -131,8 +127,7 @@ export const requestPasswordReset = async ({
     });
 
     return { success: true, message: "Check your email for the reset link." };
-  } catch (error) {
-    console.error(error);
+  } catch {
     return {
       success: false,
       message: "Something went wrong. Please try again.",
@@ -154,7 +149,7 @@ export const resetPassword = async (newPassword: string, token: string) => {
       message:
         "Password reset. You will automatically be brought to the login page in 5 seconds.",
     };
-  } catch (error) {
+  } catch {
     return {
       success: false,
       message: "Something went wrong. Please try again.",

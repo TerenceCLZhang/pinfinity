@@ -22,7 +22,7 @@ export const GET = async (
     ]);
 
     return NextResponse.json({ numPins, numFollowers, numFollowing });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 };
