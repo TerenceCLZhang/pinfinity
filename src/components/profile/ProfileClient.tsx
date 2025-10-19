@@ -6,7 +6,6 @@ import FollowBtn from "@/components/FollowBtn";
 import Link from "next/link";
 import axios from "axios";
 import ProfileStats from "./ProfileStats";
-import { Truck } from "lucide-react";
 import toast from "react-hot-toast";
 
 interface Props {

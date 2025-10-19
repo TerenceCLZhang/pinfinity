@@ -54,7 +54,7 @@ const TabAndSort = ({
     if (hasTabs && activeTab && activeTab !== "all") {
       params.set("activeTab", activeTab);
     }
-    
+
     if (sort !== "latest") params.set("sort", sort);
 
     // Update URL without reloading
@@ -65,7 +65,15 @@ const TabAndSort = ({
       : currentPath;
 
     router.replace(url, { scroll: false });
-  }, [activeTab, sort, hasTabs, onChangeTab, onChangeSort, router]);
+  }, [
+    activeTab,
+    sort,
+    hasTabs,
+    onChangeTab,
+    onChangeSort,
+    router,
+    currentPath,
+  ]);
 
   return (
     <div className="flex justify-between items-center w-full">

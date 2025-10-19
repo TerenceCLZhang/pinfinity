@@ -23,13 +23,13 @@ const PinInput = ({
 }: {
   form: UseFormReturn<
     {
-      image: any;
+      image: unknown;
       title: string;
       description?: string | undefined;
     },
-    any,
+    unknown,
     {
-      image: any;
+      image: unknown;
       title: string;
       description?: string | undefined;
     }
@@ -89,7 +89,7 @@ const PinInput = ({
 
       img.src = url;
     },
-    [form]
+    [form, preview]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -108,7 +108,7 @@ const PinInput = ({
     <FormField
       control={form.control}
       name="image"
-      render={({ field }) => (
+      render={() => (
         <FormItem>
           <FormLabel>Pin</FormLabel>
           <FormDescription className="form-description-sm">

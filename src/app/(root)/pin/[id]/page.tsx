@@ -1,8 +1,6 @@
 import ImageButtons from "@/components/pin/ImageButtons";
 import OtherPostsGrid from "@/components/pin/OtherPostsGrid";
-import PinGrid from "@/components/PinGrid";
 import UserAvatar from "@/components/UserAvatar";
-import { auth } from "@/lib/auth/auth";
 import { db } from "@/lib/prisma";
 import Image from "next/image";
 import Link from "next/link";

@@ -32,7 +32,7 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
 
     // Check if the user has liked the current pin
     hasLikedPin();
-  }, [pin.id, user?.id]);
+  }, [pin.id, user, user?.id]);
 
   const handleLike = async () => {
     if (!user) {

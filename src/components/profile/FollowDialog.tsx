@@ -70,10 +70,12 @@ const FollowDialog = ({
     };
 
     fetchUsers();
-  }, [profileId, page, open]);
+  }, [profileId, page, open, hasMore, label]);
 
   useEffect(() => {
-    if (!lastRef.current) return;
+    const target = lastRef.current;
+
+    if (!target) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -84,10 +86,10 @@ const FollowDialog = ({
       { threshold: 0.5 }
     );
 
-    observer.observe(lastRef.current);
+    observer.observe(target);
 
     return () => {
-      if (lastRef.current) observer.unobserve(lastRef.current);
+      if (target) observer.unobserve(target);
     };
   }, [users, hasMore]);
 
@@ -112,7 +114,7 @@ const FollowDialog = ({
         <DialogHeader>
           <DialogTitle className="text-2xl capitalize">{label}</DialogTitle>
           <DialogDescription className="sr-only">
-            {label}'s of this user.
+            {label}&apos;s of this user.
           </DialogDescription>
           <DialogClose />
         </DialogHeader>

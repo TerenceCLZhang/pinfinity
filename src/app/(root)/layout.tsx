@@ -2,7 +2,6 @@ import "../globals.css";
 import Header from "@/components/header/Header";
 import { redirect } from "next/navigation";
 import SessionSync from "@/components/SessionSync";
-import ScrollToTop from "@/components/scrollToTop";
 import { getSession } from "@/lib/getSession";
 
 export default async function RootLayout({
@@ -19,7 +18,6 @@ export default async function RootLayout({
 
   return (
     <div className="flex flex-col items-center gap-15 min-h-screen">
-      <ScrollToTop />
       <SessionSync user={session?.user}>
         <Header />
         <main className="container p-8 mt-25">{children}</main>

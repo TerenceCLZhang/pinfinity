@@ -17,8 +17,6 @@ const FollowBtn = ({
   onFollowChange?: (change: number) => void;
   size?: "default" | "lg" | "sm" | "icon";
 }) => {
-  if (!userId || userId === profileId) return <></>;
-
   const [loading, setLoading] = useState(false);
   const [following, setFollowing] = useState(false);
   const [initialised, setInitialised] = useState(false);
@@ -38,7 +36,9 @@ const FollowBtn = ({
     };
 
     checkFollowing();
-  }, [profileId]);
+  }, [profileId, userId]);
+
+  if (!userId || userId === profileId) return null;
 
   const handleFollow = async () => {
     setLoading(true);

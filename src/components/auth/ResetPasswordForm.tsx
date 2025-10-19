@@ -47,7 +47,7 @@ export default function ResetPasswordFormUnauthenticated() {
     if (!token) {
       router.push("/");
     }
-  }, [token]);
+  }, [router, token]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!token) return;
