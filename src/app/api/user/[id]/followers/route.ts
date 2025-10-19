@@ -1,8 +1,8 @@
 import { db } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (
-  req: NextResponse,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) => {
   const { searchParams } = new URL(req.url);
