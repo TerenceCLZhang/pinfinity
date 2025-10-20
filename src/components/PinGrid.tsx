@@ -91,7 +91,7 @@ const PinGrid = ({
     <div className="space-y-5 w-full">
       <div className="container flex flex-col gap-15 items-center">
         <ResponsiveMasonry
-          columnsCountBreakPoints={{ 349: 2, 767: 3, 1023: 4, 1279: 5 }}
+          columnsCountBreakPoints={{ 0: 1, 349: 2, 767: 3, 1023: 4, 1279: 5 }}
           className="w-full"
         >
           <Masonry>

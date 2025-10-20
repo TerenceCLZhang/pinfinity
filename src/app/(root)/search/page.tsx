@@ -26,7 +26,7 @@ const Page = async ({ searchParams }: { searchParams: { q: string } }) => {
 
   return (
     <div>
-      <h2>
+      <h2 className="mb-2">
         Search Results for <i>{q}</i>
       </h2>
 

@@ -76,7 +76,7 @@ const TabAndSort = ({
   ]);
 
   return (
-    <div className="flex justify-between items-center w-full">
+    <div className="flex w-full flex-col sm:flex-row gap-5 sm:gap-0 items-center justify-between">
       {hasTabs && (
         <div className="space-x-5">
           {tabs!.map((tab) => (
@@ -95,7 +95,7 @@ const TabAndSort = ({
       )}
 
       <Select value={sort} onValueChange={(value) => setSort(value)}>
-        <SelectTrigger className="w-50 ml-auto">
+        <SelectTrigger className="w-50 sm:ml-auto">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

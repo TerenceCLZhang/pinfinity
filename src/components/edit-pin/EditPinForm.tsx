@@ -18,6 +18,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { editPin } from "@/lib/pins/actions";
+import DeletePinBtn from "./DeletePinBtn";
 
 const formSchema = z.object({
   title: z
@@ -38,10 +39,12 @@ export default function EditPinForm({
   id,
   title,
   description,
+  url,
 }: {
   id: string;
   title: string;
   description?: string;
+  url: string;
 }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -129,9 +132,13 @@ export default function EditPinForm({
             )}
           />
 
-          <Button type="submit" size={"lg"} disabled={submitting}>
-            {submitting ? "Updating..." : "Update"}
-          </Button>
+          <div className="flex justify-between">
+            <Button type="submit" size={"lg"} disabled={submitting}>
+              {submitting ? "Updating..." : "Update"}
+            </Button>
+
+            <DeletePinBtn id={id} url={url} />
+          </div>
         </div>
       </form>
     </Form>

@@ -42,8 +42,8 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   return (
     <section className="space-y-20">
-      <div className="container flex gap-10">
-        <div className="card-border-shadow w-[45%] flex flex-col gap-5 items-center justify-center self-center">
+      <div className="container flex gap-10 flex-col lg:flex-row">
+        <div className="card-border-shadow w-full lg:w-[45%] flex flex-col gap-5 items-center justify-center self-center">
           <Image
             src={pin.image}
             alt={pin.title}
@@ -55,7 +55,9 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
         </div>
 
         <div className="flex-1 card-border-shadow flex flex-col gap-5 h-fit self-center max-h-full">
-          <h2 className="text-4xl font-bold">{pin.title}</h2>
+          <h2 className="text-4xl font-bold text-center md:text-left">
+            {pin.title}
+          </h2>
 
           <Link
             href={`/profile/${author?.username}`}
@@ -69,7 +71,9 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
           </Link>
 
           {pin.description && (
-            <p className="whitespace-pre-line">{pin.description}</p>
+            <p className="whitespace-pre-line text-justify">
+              {pin.description}
+            </p>
           )}
 
           <span>
@@ -80,7 +84,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold">
+        <h2 className="text-2xl font-semibold mb-5 md:mb-0">
           Explore more pins by {author.displayUsername}
         </h2>
 

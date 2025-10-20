@@ -72,13 +72,13 @@ export default function CreatePinForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8 mx-auto w-full flex gap-10 items-center"
+        className="space-y-8 mx-auto w-full flex gap-10 items-center flex-col lg:flex-row"
       >
-        <div className="flex-1">
+        <div className="w-full lg:flex-1">
           <PinInput form={form} submitting={submitting} />
         </div>
 
-        <div className="flex-1 space-y-5">
+        <div className="w-full lg:flex-1 space-y-5">
           <FormField
             control={form.control}
             name="title"

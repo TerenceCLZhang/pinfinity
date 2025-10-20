@@ -48,12 +48,11 @@ Other
 - [x] Search pins by title or description
 - [x] Mason grid layout
 - [x] Infinite scroll for grid
-- [ ] Desktop responsiveness
+- [x] Mobile, tablet, and desktop responsiveness
 
 ## Extra Features
 
 - [x] Following grid of all pins posted by followed users
-- [ ] Mobile and tablet responsiveness
 - [x] Remember me button
 - [ ] Able to search for users
 - [x] Show followers and following lists on profile

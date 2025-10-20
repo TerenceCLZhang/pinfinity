@@ -53,20 +53,32 @@ const ProfileClient = ({ userId, profileId, about }: Props) => {
 
       <p className="whitespace-pre-wrap text-center">{about}</p>
 
-      {profileId && profileId !== userId && (
-        <FollowBtn
-          userId={userId}
-          profileId={profileId}
-          onFollowChange={(change) => setNumFollowers((prev) => prev + change)}
-          size="lg"
-        />
-      )}
+      <div className="flex gap-2 md:gap-5">
+        {profileId === userId && (
+          <Button asChild type="button" size={"lg"}>
+            <Link href={"/create"} className="inline-flex items-center gap-2">
+              Create Pin
+            </Link>
+          </Button>
+        )}
 
-      {profileId === userId && (
-        <Button type="button" asChild size={"lg"}>
-          <Link href="/profile/edit">Edit Profile</Link>
-        </Button>
-      )}
+        {profileId && profileId !== userId && (
+          <FollowBtn
+            userId={userId}
+            profileId={profileId}
+            onFollowChange={(change) =>
+              setNumFollowers((prev) => prev + change)
+            }
+            size="lg"
+          />
+        )}
+
+        {profileId === userId && (
+          <Button type="button" asChild size={"lg"}>
+            <Link href="/profile/edit">Edit Profile</Link>
+          </Button>
+        )}
+      </div>
     </>
   );
 };

@@ -1,17 +1,11 @@
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import SearchBar from "./SearchBar";
-import AvatarDropDown from "./AvatarDropDown";
-import { PlusIcon } from "lucide-react";
-import { getSession } from "@/lib/getSession";
+import SearchAndButtons from "./SearchAndButtons";
 
 const Header = async () => {
-  const session = await getSession();
-
   return (
     <header className="fixed w-full bg-white top-0 py-8 z-40">
-      <div className="container px-8 flex items-center justify-between gap-15 mx-auto">
+      <div className="container px-8 flex items-center justify-between mx-auto gap-5 md:gap-15">
         <div className="flex items-center gap-10 h-full">
           <Link
             href="/"
@@ -25,38 +19,13 @@ const Header = async () => {
                 className="object-contain"
               />
             </div>
-            <h1 className="text-3xl leading-none h-full flex items-center">
+            <h1 className="sr-only lg:not-sr-only text-3xl leading-none h-full flex items-center">
               Pinfinity
             </h1>
           </Link>
         </div>
 
-        <SearchBar />
-
-        <div className="space-x-2 h-full">
-          {session ? (
-            <div className="h-full flex flex-row items-center gap-5">
-              <Button asChild type="button" size={"lg"}>
-                <Link
-                  href={"/create"}
-                  className="inline-flex items-center gap-2"
-                >
-                  <PlusIcon /> Create
-                </Link>
-              </Button>
-              <AvatarDropDown />
-            </div>
-          ) : (
-            <>
-              <Button asChild type="button" size={"lg"}>
-                <Link href={"/login"}>Log In</Link>
-              </Button>
-              <Button asChild type="button" variant={"secondary"} size={"lg"}>
-                <Link href={"/signup"}>Sign Up</Link>
-              </Button>
-            </>
-          )}
-        </div>
+        <SearchAndButtons />
       </div>
     </header>
   );

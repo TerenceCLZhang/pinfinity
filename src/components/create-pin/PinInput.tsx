@@ -16,6 +16,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import toast from "react-hot-toast";
 import { Input } from "../ui/input";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 const PinInput = ({
   form,
@@ -37,6 +38,7 @@ const PinInput = ({
   submitting: boolean;
 }) => {
   const [preview, setPreview] = useState<string | null>(null);
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const onDrop = useCallback(
     (files: File[]) => {
@@ -161,7 +163,7 @@ const PinInput = ({
             ) : (
               <div
                 {...getRootProps()}
-                className={`border-dashed border-2 p-4 rounded-md text-center cursor-pointer flex items-center justify-center flex-col gap-5 h-100 
+                className={`border-dashed border-2 p-4 rounded-md text-center cursor-pointer flex items-center justify-center flex-col gap-5 lg:h-100 
                 hover:bg-neutral-50 hover:opacity-75 ${
                   isDragActive ? "border-primary" : "border-secondary"
                 }`}
@@ -176,9 +178,11 @@ const PinInput = ({
                 </div>
 
                 <p>
-                  {isDragActive
-                    ? "Drop the file here..."
-                    : "Drag & drop a file, or click to select"}
+                  {isDesktop
+                    ? isDragActive
+                      ? "Drop the file here..."
+                      : "Drag & drop a file, or click to select"
+                    : "Select File"}
                 </p>
               </div>
             )}

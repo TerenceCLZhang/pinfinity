@@ -38,13 +38,14 @@ const Page = async ({ params }: { params: Promise<{ username: string }> }) => {
 
   return (
     <section className="container flex flex-col gap-10">
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center justify-center gap-4">
         <UserAvatar
           image={user.image}
           username={user.displayUsername as string}
           className="size-40"
           textSize="text-8xl"
         />
+
         <div className="text-center space-y-2">
           <h2 className="text-4xl">{user.name}</h2>
           <span className="text-sm italic">@{user.displayUsername}</span>

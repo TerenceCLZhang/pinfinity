@@ -1,4 +1,3 @@
-import DeletePinBtn from "@/components/edit-pin/DeletePinBtn";
 import EditPinForm from "@/components/edit-pin/EditPinForm";
 import { getSession } from "@/lib/getSession";
 import { db } from "@/lib/prisma";
@@ -28,8 +27,8 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <section className="container w-full space-y-5">
       <h1 className="text-4xl text-center">Edit Pin</h1>
-      <div className="flex gap-10 relative">
-        <div className="card-border-shadow w-[45%] flex items-center justify-center">
+      <div className="flex gap-10 flex-col lg:flex-row">
+        <div className="card-border-shadow flex items-center justify-center lg:w-[45%]">
           <Image
             src={pin.image}
             alt={pin.title}
@@ -43,11 +42,8 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
             id={pin.id}
             title={pin.title}
             description={pin.description ?? ""}
+            url={pin.image}
           />
-        </div>
-
-        <div className="absolute top-0 right-0">
-          <DeletePinBtn id={pin.id} url={pin.image} />
         </div>
       </div>
     </section>

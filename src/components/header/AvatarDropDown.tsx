@@ -48,6 +48,15 @@ const AvatarDropDown = () => {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem
+            className="hover:bg-secondary lg:hidden"
+            onClick={() => setOpen(false)}
+          >
+            <Link href={`/create`} className="w-full">
+              Create Pin
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
             className="hover:bg-secondary"
             onClick={() => setOpen(false)}
           >

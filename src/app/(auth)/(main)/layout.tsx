@@ -17,7 +17,7 @@ export default async function RootLayout({
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <main className="flex flex-col justify-center items-center shadow-xl border border-secondary p-10 rounded-lg w-125 my-5 xl:my-0">
+      <main className="auth-layout-div">
         <Link href={"/"} className="mb-5">
           <Image src={"/logo.svg"} alt="" width={75} height={75} />
         </Link>

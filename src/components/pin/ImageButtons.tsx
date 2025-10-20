@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Pin } from "@/generated/prisma";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { likePin, unlikePin } from "@/lib/likes/action";
 import { useUserStore } from "@/stores/userStore";
 import axios from "axios";
@@ -14,7 +15,8 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
   const user = useUserStore((state) => state.user);
   const [numLikes, setNumLikes] = useState(pin.likeCount);
   const [hasLiked, setHasLiked] = useState(false);
-  const [initialised, setInitialised] = useState(false);
+
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   useEffect(() => {
     const hasLikedPin = async () => {
@@ -25,8 +27,6 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
         setHasLiked(res.data.liked);
       } catch {
         toast.error("Failed to fetch whether user liked pin.");
-      } finally {
-        setInitialised(true);
       }
     };
 
@@ -85,24 +85,24 @@ const ImageButtons = ({ pin }: { pin: Pin }) => {
   return (
     <div className="flex gap-5">
       <div>
-        {initialised && (
-          <Button
-            type="button"
-            className="space-x-2 w-fit px-3"
-            onClick={hasLiked ? handleUnlike : handleLike}
-          >
-            <ThumbsUp fill={hasLiked ? "#fff" : "none"} />
-            {numLikes}
-          </Button>
-        )}
+        <Button
+          type="button"
+          className="space-x-2 w-fit px-3"
+          onClick={hasLiked ? handleUnlike : handleLike}
+        >
+          <ThumbsUp fill={hasLiked ? "#fff" : "none"} />
+          {numLikes}
+        </Button>
       </div>
 
-      <a href={pin.image} target="_blank" download>
-        <Button type="button" className="space-x-2 w-fit px-3">
-          <Download className="w-5 h-5" />
-          Download
-        </Button>
-      </a>
+      {isDesktop && (
+        <a href={pin.image} target="_blank" download>
+          <Button type="button" className="space-x-2 w-fit px-3">
+            <Download className="w-5 h-5" />
+            Download
+          </Button>
+        </a>
+      )}
       {user?.id === pin.authorId && (
         <Button asChild>
           <Link href={`/pin/edit/${pin.id}`}>

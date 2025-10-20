@@ -207,4 +207,8 @@
   .card-border-shadow {
     @apply border border-secondary shadow-md p-10 rounded-lg;
   }
+
+  .auth-layout-div {
+    @apply flex flex-col justify-center items-center md:shadow-xl md:border md:border-secondary md:rounded-lg p-10 md:w-125 my-5 xl:my-0;
+  }
 }
