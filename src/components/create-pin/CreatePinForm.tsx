@@ -102,7 +102,7 @@ export default function CreatePinForm() {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <div className="flex justify-between">
+                <div className="flex justify-between relative">
                   <FormLabel>Description</FormLabel>
                   <span className="text-xs">
                     {form.watch("description")?.length} / 800

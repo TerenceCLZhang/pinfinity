@@ -30,7 +30,9 @@ const Header = async () => {
             </h1>
           </Link>
         </div>
+
         <SearchBar />
+
         <div className="space-x-2 h-full">
           {session ? (
             <div className="h-full flex flex-row items-center gap-5">

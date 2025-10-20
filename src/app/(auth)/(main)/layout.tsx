@@ -17,12 +17,12 @@ export default async function RootLayout({
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="flex flex-col justify-center items-center shadow-xl border border-secondary p-10 rounded-lg w-125">
+      <main className="flex flex-col justify-center items-center shadow-xl border border-secondary p-10 rounded-lg w-125 my-5 xl:my-0">
         <Link href={"/"} className="mb-5">
           <Image src={"/logo.svg"} alt="" width={75} height={75} />
         </Link>
         {children}
-      </div>
+      </main>
     </div>
   );
 }

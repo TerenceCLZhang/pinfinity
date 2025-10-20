@@ -17,7 +17,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="w-[50%] h-full relative">
+    <div className="w-[45%] xl:w-[50%] h-full relative">
       <Search className="absolute left-5 top-1/2 -translate-y-1/2 size-5" />
 
       <form onSubmit={handleSearch}>

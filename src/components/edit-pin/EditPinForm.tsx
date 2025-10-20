@@ -104,7 +104,7 @@ export default function EditPinForm({
             name="description"
             render={({ field }) => (
               <FormItem>
-                <div className="flex justify-between">
+                <div className="flex justify-between relative">
                   <FormLabel>Description</FormLabel>
                   <span className="absolute right-3 bottom-1 text-xs">
                     {form.watch("description")?.length} / 800

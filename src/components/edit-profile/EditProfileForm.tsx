@@ -147,7 +147,7 @@ export default function EditProfileForm() {
           name="about"
           render={({ field }) => (
             <FormItem>
-              <div className="flex justify-between">
+              <div className="flex justify-between relative">
                 <FormLabel>About</FormLabel>
                 <span className="absolute right-3 bottom-1 text-xs">
                   {form.watch("about")?.length} / 800

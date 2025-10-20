@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
 import { Pin } from "@/generated/prisma";
-import Masonry from "react-responsive-masonry";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import LoadingSpinner from "./LoadingSpinner";
 import toast from "react-hot-toast";
 
@@ -90,11 +90,16 @@ const PinGrid = ({
   return (
     <div className="space-y-5 w-full">
       <div className="container flex flex-col gap-15 items-center">
-        <Masonry columnsCount={5} gutter="15px">
-          {pins.map((pin) => (
-            <PinCard key={pin.id} pin={pin} />
-          ))}
-        </Masonry>
+        <ResponsiveMasonry
+          columnsCountBreakPoints={{ 349: 2, 767: 3, 1023: 4, 1279: 5 }}
+          className="w-full"
+        >
+          <Masonry>
+            {pins.map((pin) => (
+              <PinCard key={pin.id} pin={pin} />
+            ))}
+          </Masonry>
+        </ResponsiveMasonry>
 
         {/* Spinner when fetching next page */}
         {hasMore && loadingRef.current && <LoadingSpinner />}
