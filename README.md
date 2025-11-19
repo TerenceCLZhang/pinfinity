@@ -1,5 +1,7 @@
 # Pinfinity
 
+![main](pinfinity.png)
+
 **Pinfinity — a Pinterest clone built with Next.js**
 
 Pinfinity is a full-stack image-sharing web application inspired by Pinterest, built with Next.js and TypeScript. It enables users to upload, explore, and share visually engaging pins within a modern, responsive interface. The app features secure authentication, image storage, and real-time interactions like liking and managing pins.
