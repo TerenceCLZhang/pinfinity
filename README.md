@@ -8,6 +8,7 @@ Pinfinity is a full-stack image-sharing web application inspired by Pinterest, b
 
 ## Tech Stack
 
+- React
 - Next.js
 - TypeScript
 - Tailwind CSS
@@ -19,40 +20,20 @@ Pinfinity is a full-stack image-sharing web application inspired by Pinterest, b
 - Better Auth
 - Zustand
 
-## Minimum Viable Product (MVP)
+## Core Features
 
-Authentication
+- User authentication (sign up, login, logout)
+- Email verification
+- User profiles with avatar and bio
+- Upload and manage image pins
+- Browse pins in a responsive masonry grid
+- View individual pin details
+- Like and unlike pins with live counts
+- Follow and unfollow users
+- Search pins by title or description
+- Infinite scrolling for smooth browsing
 
-- [x] User sign up / login / logout
-- [x] Email verification
-- [x] Basic user profile with avatar, username, and bio
-- [x] Session persistence Pins
-- [x] Upload a new pin
-- [x] View individual pin details
-- [x] Display a grid of all pins
-- [x] Edit or delete own pins
-- [x] Download pin images
-
-Engagement
-
-- [x] Like / unlike a pin
-- [x] View like count
-- [x] Sort pins by most liked
-
-User Profiles
-
-- [x] View a user’s profile and all pins they’ve posted
-- [x] Follow / unfollow users
-- [x] Show pin, follower, and following counts
-
-Other
-
-- [x] Search pins by title or description
-- [x] Mason grid layout
-- [x] Infinite scroll for grid
-- [x] Mobile, tablet, and desktop responsiveness
-
-## Extra Features
+## TODO List
 
 - [x] Following grid of all pins posted by followed users
 - [x] Remember me button
